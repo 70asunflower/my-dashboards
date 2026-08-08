@@ -897,7 +897,7 @@ function loadState(){
   try{
     ['holdings','trades','options','reviews','portfolios','todos'].forEach(function(k){
       var raw = localStorage.getItem(STORE[k]);
-      if(raw){ var arr = JSON.parse(raw); if(Array.isArray(arr)) state[k] = arr; }
+      if(raw){ var arr = JSON.parse(raw); if(Array.isArray(arr)) state[k] = arr.filter(function(x){return !String(x.id||'').startsWith('demo-')}); }
     });
     var s = localStorage.getItem(STORE.settings);
     if(s){ var so = JSON.parse(s); if(so && so.colorMode) state.settings.colorMode = so.colorMode; if(so && so.usdRate) state.settings.usdRate = so.usdRate; if(so && so.hkdRate) state.settings.hkdRate = so.hkdRate; if(so && so.theme) state.settings.theme = so.theme; }
@@ -1027,48 +1027,10 @@ async function disableCrypto(pw){
   vaultKey = null; cryptoEnabled = false;
 }
 
-/* ---------- 示例数据（含 1 条预警 + 1 条临期期权） ---------- */
+/* ---------- 示例数据（已清空：不再注入演示数据） ---------- */
 function seedDemo(){
   try{ if(localStorage.getItem(STORE.seeded)) return; }catch(e){ return; }
   if(state.holdings.length || state.trades.length || state.options.length || state.reviews.length || state.portfolios.length || state.todos.length) return;
-  var today = todayISO();
-  var d = new Date();
-  var exp = new Date(d.getTime() + 3*86400000);      // 3 天后到期 → 置顶预警
-  var expStr = exp.getFullYear()+'-'+pad2(exp.getMonth()+1)+'-'+pad2(exp.getDate());
-  var p1 = new Date(d.getTime() - 40*86400000);      // 约 40 天前
-  var p2 = new Date(d.getTime() - 70*86400000);
-  var p3 = new Date(d.getTime() - 100*86400000);
-  var yday = new Date(d.getTime() - 1*86400000);     // 昨天
-  function iso(x){ return x.getFullYear()+'-'+pad2(x.getMonth()+1)+'-'+pad2(x.getDate()); }
-  function month(x){ return x.getFullYear()+'-'+pad2(x.getMonth()+1); }
-  state.portfolios = [
-    {id:'demo-p1', name:'长线组合', note:'示例：核心资产，长期持有'},
-    {id:'demo-p2', name:'短线组合', note:'示例：交易仓位'}
-  ];
-  state.holdings = [
-    {id:'demo-h1', market:'us',  code:'NVDA',   name:'英伟达',     qty:10,  cost:118.50, price:143.20, note:'示例：AI 算力龙头', updatedAt:today, portfolio:'demo-p1', target:160, stop:105},
-    {id:'demo-h2', market:'cn',  code:'513050', name:'中概互联ETF', qty:2000, cost:1.284,  price:1.131,  note:'示例：自定义预警线演示', updatedAt:today, portfolio:'demo-p2', warnPct:-8, target:1.30, stop:1.05},
-    {id:'demo-h3', market:'fund',code:'110011', name:'易方达优质精选', qty:800, cost:2.60,   price:2.745,  note:'示例：定投', updatedAt:today, portfolio:'demo-p1', target:3.0},
-    {id:'demo-h4', market:'hk',  code:'1810.HK', name:'小米集团',   qty:200, cost:16.80,  price:18.20,  note:'示例：港股持仓', updatedAt:today, portfolio:'demo-p1', target:20, stop:15}
-  ];
-  state.options = [
-    {id:'demo-o1', code:'SPY260807C2100', name:'SPY 2100 Call', side:'buy_call', strike:2100, expiry:expStr, prem:42.5, cur:38.0, qty:1, note:'示例：临期合约，3 天后到期', portfolio:'demo-p2', done:false},
-    {id:'demo-o2', code:'AAPL260815C240', name:'AAPL 240 Call', side:'sell_call', strike:240, expiry:iso(new Date(d.getTime()+28*86400000)), prem:1.8, cur:1.35, qty:2, note:'示例：卖方收权利金', portfolio:'demo-p2', done:false}
-  ];
-  state.trades = [
-    {id:'demo-t1', date:iso(p1), market:'us', code:'AAPL', name:'苹果', side:'sell', qty:20, price:232.4, fee:2.9, pnl:820.50, note:'示例：止盈'},
-    {id:'demo-t2', date:iso(p2), market:'cn', code:'159915', name:'创业板ETF', side:'buy', qty:1000, price:1.95, fee:1.0, pnl:null, note:'示例：加仓'},
-    {id:'demo-t3', date:iso(p3), market:'fund', code:'110011', name:'易方达优质精选', side:'subscribe', qty:800, price:2.60, fee:0, pnl:null, note:'示例：定投扣款'}
-  ];
-  state.reviews = [
-    {id:'demo-r1', month:month(p3), ret:2.1,  note:'示例：震荡市，持有为主。'},
-    {id:'demo-r2', month:month(p2), ret:-1.8, note:'示例：回调月，未做任何操作，静观。'},
-    {id:'demo-r3', month:month(p1), ret:4.5,  note:'示例：止盈 AAPL，落袋为安。'}
-  ];
-  state.todos = [
-    {id:'demo-td1', text:'查看 NVDA 财报发布日期并记录', date:iso(yday), done:false},
-    {id:'demo-td2', text:'核对期权保证金占用', date:today, done:false}
-  ];
   saveState();
   try{ localStorage.setItem(STORE.seeded, '1'); }catch(e){}
 }

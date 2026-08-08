@@ -384,42 +384,18 @@ function safeRemove(k){try{if(LS_OK)localStorage.removeItem(k)}catch(e){}}
 var projects=load(LS_PROJECTS,[]), papers=load(LS_PAPERS,[]), ideas=load(LS_IDEAS,[]), habits=load(LS_HABITS,[]), records=load(LS_RECORDS,{}), logs=load(LS_LOGS,[]), todos=load(LS_TODOS,[]);
 
 function seed(){
-  var t=todayStr();
-  projects=[
-    {id:uid(),name:"小论文 A：改进注意力机制",stage:1,progress:55,deadline:addDays(t,-1),done:false,demo:true,tasks:[
-      {id:uid(),text:"跑完 3 组对比实验",done:false},{id:uid(),text:"补 baseline 消融实验",done:true}]},
-    {id:uid(),name:"毕业论文 · 综述章节",stage:2,progress:30,deadline:addDays(t,10),done:false,demo:true,tasks:[
-      {id:uid(),text:"整理近 3 年综述文献",done:false}]}
-  ];
-  papers=[
-    {id:uid(),title:"Attention Is All You Need",tag:"NLP·综述",status:"待读",deadline:addDays(t,-2),demo:true},
-    {id:uid(),title:"Deep Residual Learning for Image Recognition",tag:"CV·基础",status:"在读",deadline:"",
-      q:"深层网络为什么难以训练？残差结构能否解决退化问题",cond:"图像分类，VGG / ResNet 系列",
-      method:"恒等捷径连接（identity shortcut）堆叠残差块",crit:"ImageNet Top-1 / Top-5 错误率",
-      concl:"152 层 ResNet 超越 VGG，深层网络可稳定训练",limit:"深度增加收益递减，仍需更优结构",
-      relation:"基线",source:"v1 · 2015 · arXiv:1512.03385",demo:true},
-    {id:uid(),title:"BERT: Pre-training of Deep Bidirectional Transformers",tag:"NLP·基础",status:"已引用",deadline:"",demo:true}
-  ];
-  ideas=[
-    {id:uid(),content:"实验三可以试试数据增强 + Dropout 组合，或许能缓解过拟合",tags:"实验",date:addDays(t,-1),converted:false,demo:true},
-    {id:uid(),content:"导师说 8 月底前交综述初稿，写作进度要提速",tags:"导师",date:addDays(t,-2),converted:false,demo:true}
-  ];
-  habits=[
-    {id:uid(),name:"读文献",demo:true},{id:uid(),name:"写作",demo:true},{id:uid(),name:"运动",demo:true}
-  ];
-  records={};
-  logs=[
-    {id:uid(),date:t,content:"今天跑了 3 组对比实验，顺手把文献管理里积压的 2 篇读完了",ts:Date.now()},
-    {id:uid(),date:addDays(t,-1),content:"整理综述大纲，确认小论文 A 的 baseline 设定",ts:Date.now()-1}
-  ];
-  todos=[
-    {id:uid(),text:"给导师发本周实验进展邮件",date:t,done:false}
-  ];
+  projects=[];papers=[];ideas=[];habits=[];records={};logs=[];todos=[];
   save(LS_PROJECTS,projects);save(LS_PAPERS,papers);save(LS_IDEAS,ideas);save(LS_HABITS,habits);save(LS_RECORDS,records);save(LS_LOGS,logs);save(LS_TODOS,todos);
   safeSet(LS_INSTALLED,"1");
 }
 if(!safeGet(LS_INSTALLED)){seed()}
 else{projects=load(LS_PROJECTS,[]);papers=load(LS_PAPERS,[]);ideas=load(LS_IDEAS,[]);habits=load(LS_HABITS,[]);records=load(LS_RECORDS,{});logs=load(LS_LOGS,[]);todos=load(LS_TODOS,[])}
+/* 过滤旧示例数据（demo 标记），保留真实数据 */
+projects=projects.filter(function(x){return !x.demo});
+papers=papers.filter(function(x){return !x.demo});
+ideas=ideas.filter(function(x){return !x.demo});
+logs=logs.filter(function(x){return !x.demo});
+todos=todos.filter(function(x){return !x.demo});
 
 function persist(){save(LS_PROJECTS,projects);save(LS_PAPERS,papers);save(LS_IDEAS,ideas);save(LS_HABITS,habits);save(LS_RECORDS,records);save(LS_LOGS,logs);save(LS_TODOS,todos);scheduleAutoPush()}
 

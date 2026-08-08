@@ -362,7 +362,7 @@ footer{text-align:center;font-size:12px;color:var(--text-3);padding:22px 0 8px}
 "use strict";
 var LS_PROJECTS="wb_research_projects", LS_PAPERS="wb_research_papers", LS_IDEAS="wb_research_ideas",
     LS_HABITS="wb_research_habits", LS_RECORDS="wb_research_records", LS_INSTALLED="wb_research_installed", LS_TIP="wb_research_tip30", LS_THEME="wb_research_theme",
-    LS_GH_TOKEN="wb_research_gh_token", LS_GH_REPO="wb_research_gh_repo", LS_GH_PATH="wb_research_gh_path", LS_GH_AUTO="wb_research_gh_auto", LS_GH_LAST="wb_research_gh_last",
+    LS_GH_TOKEN="wb_research_gh_token", LS_GH_REPO="wb_research_gh_repo", LS_GH_PATH="wb_research_gh_path", LS_GH_AUTO="wb_research_gh_auto", LS_GH_LAST="wb_research_gh_last", LS_GH_LOCAL="wb_research_gh_local",
     LS_LOGS="wb_research_logs", LS_TODOS="wb_research_todos";
 
 function uid(){return Date.now().toString(36)+Math.random().toString(36).slice(2,7)}
@@ -372,7 +372,7 @@ function addDays(str,n){var p=str.split("-");var d=new Date(+p[0],+p[1]-1,+p[2]+
 function diffDays(a,b){var pa=a.split("-"),pb=b.split("-");var A=new Date(+pa[0],+pa[1]-1,+pa[2]),B=new Date(+pb[0],+pb[1]-1,+pb[2]);return Math.round((B-A)/86400000)}
 function fmtCN(str){if(!str)return "";var p=str.split("-");return (+p[1])+"月"+ (+p[2])+"日"}
 function fmtShort(str){if(!str)return "";return str.slice(5).replace("-","/")}
-function esc(s){return String(s==null?"":s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}
+function esc(s){return String(s==null?"":s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#39;")}
 
 function load(k,d){try{var v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}}
 function save(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
@@ -397,7 +397,7 @@ ideas=ideas.filter(function(x){return !x.demo});
 logs=logs.filter(function(x){return !x.demo});
 todos=todos.filter(function(x){return !x.demo});
 
-function persist(){save(LS_PROJECTS,projects);save(LS_PAPERS,papers);save(LS_IDEAS,ideas);save(LS_HABITS,habits);save(LS_RECORDS,records);save(LS_LOGS,logs);save(LS_TODOS,todos);scheduleAutoPush()}
+function persist(){save(LS_PROJECTS,projects);save(LS_PAPERS,papers);save(LS_IDEAS,ideas);save(LS_HABITS,habits);save(LS_RECORDS,records);save(LS_LOGS,logs);save(LS_TODOS,todos);safeSet(LS_GH_LOCAL,new Date().toISOString());scheduleAutoPush()}
 
 /* ---------- 工具 ---------- */
 function ringSVG(p){
@@ -548,8 +548,8 @@ function renderProjects(){
         if(c)c.setAttribute("stroke-dashoffset",off.toFixed(1));
         var t=wrap.querySelector("text");if(t)t.textContent=p.progress+"%";
       }
-      persist();
     });
+    r.addEventListener("change",function(){persist()});
   });
   el.querySelectorAll("[data-adv]").forEach(function(b){b.addEventListener("click",function(){advance(b.getAttribute("data-adv"))})});
   el.querySelectorAll("[data-a='edit']").forEach(function(b){b.addEventListener("click",function(){editProject(b.getAttribute("data-id"))})});
@@ -767,7 +767,6 @@ function openModal(html,onOk){
   var ok=m.querySelector("#mOk"),cancel=m.querySelector("#mCancel");
   if(cancel){cancel.addEventListener("click",closeModal)}
   if(ok){ok.addEventListener("click",function(){try{onOk();closeModal()}catch(e){}})}
-  mask.addEventListener("click",function(e){if(e.target===mask)closeModal()});
 }
 function closeModal(){document.getElementById("mask").classList.remove("show")}
 
@@ -833,16 +832,6 @@ function wipeAll(){
       location.reload();
     });
 }
-function clearDemo(){
-  var bp=projects.length,pn=papers.length,id=ideas.length,hh=habits.length;
-  projects=projects.filter(function(x){return !x.demo});
-  papers=papers.filter(function(x){return !x.demo});
-  ideas=ideas.filter(function(x){return !x.demo});
-  habits=habits.filter(function(x){return !x.demo});
-  persist();render();
-  alert("已清空示例数据（课题 "+bp+"→"+projects.length+" · 文献 "+pn+"→"+papers.length+" · 灵感 "+id+"→"+ideas.length+" · 习惯 "+hh+"→"+habits.length+"），可开始录入你自己的数据");
-}
-
 /* ---------- 统计与搜索 ---------- */
 function statCell(m,label,val,ico){
   return '<div class="stat" data-m="'+m+'"><span class="st-ico">'+ico+'</span><span><div class="st-num">'+val+'</div><div class="st-lb">'+label+'</div></span></div>';
@@ -913,7 +902,7 @@ function fromB64(b64){
 function getSyncCfg(){
   return{token:safeGet(LS_GH_TOKEN)||"",repo:safeGet(LS_GH_REPO)||"",path:safeGet(LS_GH_PATH)||"data/research.json",auto:safeGet(LS_GH_AUTO)!=="0",last:safeGet(LS_GH_LAST)||""};
 }
-function buildBackup(){return{version:1,exportedAt:todayStr(),projects:projects,papers:papers,ideas:ideas,habits:habits,records:records,logs:logs,todos:todos}}
+function buildBackup(){return{version:1,exportedAt:new Date().toISOString(),projects:projects,papers:papers,ideas:ideas,habits:habits,records:records,logs:logs,todos:todos}}
 function applyBackup(d){
   projects=Array.isArray(d.projects)?d.projects:[];
   papers=Array.isArray(d.papers)?d.papers:[];
@@ -968,6 +957,13 @@ function autoPull(){
       try{
         var d=JSON.parse(fromB64(j.content));
         if(!d||typeof d!=="object")return;
+        // 本地有未推送的修改时跳过自动覆盖，避免数据丢失
+        var localTs=safeGet(LS_GH_LOCAL);
+        var cloudTs=d.exportedAt;
+        if(localTs&&cloudTs&&new Date(localTs).getTime()>new Date(cloudTs).getTime()){
+          setSyncStatus&&setSyncStatus("本地有未推送的修改，已跳过自动覆盖（改动会在 5 秒后自动推送）");
+          return;
+        }
         applyBackup(d);
         render();
       }catch(e){}
@@ -1182,6 +1178,10 @@ function renderTip(){
 var WB_VER="20260808-1";
 function checkVersion(){
   if(location.protocol!=="https:")return;
+  // 10 分钟内不重复检测，避免每次打开都拉取全页（85KB+）
+  var lastCheck=+sessionStorage.getItem("wb_ver_check_ts")||0;
+  if(Date.now()-lastCheck<600000)return;
+  sessionStorage.setItem("wb_ver_check_ts",Date.now());
   fetch(location.pathname+"?v="+Date.now(),{cache:"no-store"}).then(function(r){return r.text()}).then(function(txt){
     var m=txt.match(/WB_VER\s*=\s*"([^"]+)"/);
     if(m&&m[1]&&m[1]!==WB_VER){
@@ -1265,6 +1265,7 @@ function init(){
     persist();render();
     document.getElementById("logText").value="";document.getElementById("logDate").value="";
   });
+  document.getElementById("mask").addEventListener("click",function(e){if(e.target===this)closeModal()});
   render();
 }
 document.addEventListener("DOMContentLoaded",init);

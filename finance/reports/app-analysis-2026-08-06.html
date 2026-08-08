@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AppLovin 投资分析报告 - 2026-08-06</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
+<style>
+  body { font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif; max-width: 1080px; margin: 0 auto; padding: 24px; background: #f7f8fa; color: #1f2937; }
+  h1 { font-size: 26px; margin-bottom: 4px; }
+  .subtitle { color: #6b7280; font-size: 14px; margin-bottom: 24px; }
+  .update-banner { background: #fef3c7; border: 1px solid #f59e0b; color: #92400e; padding: 12px 16px; border-radius: 10px; margin-bottom: 20px; font-size: 14px; line-height: 1.6; }
+  .decision-card { background: linear-gradient(135deg, #b91c1c, #7f1d1d); color: white; padding: 32px; border-radius: 16px; margin-bottom: 24px; box-shadow: 0 4px 16px rgba(185,28,28,0.3); }
+  .decision-card h1 { font-size: 44px; margin: 4px 0 8px; letter-spacing: 2px; }
+  .badge-row { display: flex; gap: 12px; margin: 12px 0; flex-wrap: wrap; }
+  .badge { background: rgba(255,255,255,0.2); padding: 6px 14px; border-radius: 20px; font-size: 13px; font-weight: 600; }
+  .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-top: 16px; }
+  .grid-item { background: rgba(255,255,255,0.18); padding: 14px; border-radius: 10px; }
+  .grid-item .label { font-size: 12px; opacity: 0.85; }
+  .grid-item .value { font-size: 18px; font-weight: 700; margin-top: 4px; }
+  .chart-card { background: white; padding: 24px; border-radius: 12px; margin-bottom: 24px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+  .chart-card h2 { margin-top: 0; font-size: 18px; }
+  .chart-wrap { position: relative; height: 340px; }
+  .chart-wrap.tall { height: 420px; }
+  details { border: 1px solid #e5e7eb; border-radius: 8px; padding: 12px 16px; margin-bottom: 12px; background: #fafbfc; }
+  summary { font-weight: 600; cursor: pointer; color: #111827; }
+  details p, details li { font-size: 14px; line-height: 1.7; color: #374151; }
+  ul { padding-left: 20px; }
+  .bull { color: #16a34a; font-weight: 600; }
+  .bear { color: #dc2626; font-weight: 600; }
+  .kpi-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  .kpi-table th, .kpi-table td { padding: 8px 10px; border-bottom: 1px solid #f0f0f0; text-align: left; }
+  .kpi-table th { background: #f9fafb; }
+  .disclaimer { color: #6b7280; font-size: 13px; padding: 16px; border-top: 1px solid #e5e7eb; margin-top: 24px; text-align: center; }
+  @media (max-width: 720px) { .grid { grid-template-columns: repeat(2, 1fr); } body { padding: 16px; } }
+</style>
+<style>.chart-offline-toast{position:fixed;top:12px;right:12px;background:#fff8e1;color:#7a5b00;border:1px solid #d4a537;border-radius:8px;padding:8px 12px;font-size:13px;box-shadow:0 2px 8px rgba(0,0,0,.1);z-index:9999}</style></head>
+<body>
+
+<h1>📱 AppLovin（APP.US）投资分析报告</h1>
+<div class="subtitle">分析日期：2026-08-06 ｜ 数据源：NeoData 金融数据服务 + 公开财经源（盘后价） ｜ 多角色辩论制（12 成员）</div>
+
+<!-- 数据修正公告 -->
+<div class="update-banner">
+  <strong>⚠️ 数据基准说明</strong>：8/5 常规收盘 $417.80 为<b>财报发布前</b>价格。APP 于 8/5 盘后发布 Q2 财报（营收 +53%、EPS 超预期、EBITDA +58% margin 84%、FCF $8.63 亿），但因营收/指引双微小 miss + CEO 承认"AI 模型升级节奏错拍"，<b>盘后一度暴跌 25-28%（低点约 $313），收窄后约 $337（-19%）</b>（Benzinga/TradingView/智通财经确认）。本报告以<b>盘后 $337</b> 为当前价格基准，8/6 开盘实际价为准。
+</div>
+
+<!-- 1. 顶部决策卡片 -->
+<div class="decision-card">
+  <div>最终交易决策</div>
+  <h1>🔴 SELL（减持/规避）</h1>
+  <div style="font-size:15px; opacity:0.9;">加速期已过 + 评级下调潮在途 → 深区承接 + 右侧确认</div>
+  <div class="badge-row">
+    <span class="badge">信心水平：中高</span>
+    <span class="badge">风险等级：高</span>
+    <span class="badge">无仓位者：承接上限 20%</span>
+    <span class="badge">持仓者：48h 内降至 ≤10%</span>
+  </div>
+  <div class="grid">
+    <div class="grid-item"><div class="label">现价（盘后）</div><div class="value">$337</div></div>
+    <div class="grid-item"><div class="label">承接区（左侧）</div><div class="value">265-292</div></div>
+    <div class="grid-item"><div class="label">右侧确认</div><div class="value">359-362 放量</div></div>
+    <div class="grid-item"><div class="label">硬止损</div><div class="value">承接仓 $250</div></div>
+  </div>
+</div>
+
+<!-- 2. 综合评分雷达图 -->
+<div class="chart-card">
+  <h2>📊 综合评分雷达图（五维 0-10 分）</h2>
+  <div class="chart-wrap"><canvas id="radarChart"></canvas></div>
+  <p style="font-size:13px; color:#6b7280;">技术 3.0（破 52 周新低）/ 基本面 8.5（顶级盈利质量）/ 新闻 5.5 / 情绪 3.0（恐慌超调）/ 风险暴露 8.5（评级下调潮+增速断崖）。基本面堡垒 vs 技术/情绪三重承压。</p>
+</div>
+
+<!-- 3. 价格走势图 -->
+<div class="chart-card">
+  <h2>📈 近 60 交易日价格走势（收盘价 + SMA20/SMA60 + 盘后修正）</h2>
+  <div class="chart-wrap tall"><canvas id="priceChart"></canvas></div>
+  <p style="font-size:13px; color:#6b7280;">红线：250 硬止损 ｜ 橙线：265-292 承接区 ｜ 绿线：359-362 右侧确认 ｜ 灰线：52 周低点 359</p>
+</div>
+
+<!-- 4. 多空论点对比图 -->
+<div class="chart-card">
+  <h2>⚖️ 多空论点对比（权重 1-10，研究主管裁决）</h2>
+  <div class="chart-wrap"><canvas id="debateChart"></canvas></div>
+  <p style="font-size:13px; color:#6b7280;">多头加权 4.83 vs 空头加权 6.71 —— 空头显著占优（"数据+自白"双重确认的加速期结束）。</p>
+</div>
+
+<!-- 5. 风险评估三角图 -->
+<div class="chart-card">
+  <h2>📋 风险评估三角（三方风险分析师评分 0-10）</h2>
+  <div class="chart-wrap"><canvas id="riskChart"></canvas></div>
+  <p style="font-size:13px; color:#6b7280;">激进 8.0（$337 建仓）/ 保守 8.5（纯 0 等待）/ 中性 6.5（深区左侧+右侧确认）。风险主管采纳：近端保守派、执行框架中性派。</p>
+</div>
+
+<!-- 6. 详细分析文本区 -->
+<div class="chart-card">
+  <h2>📝 详细分析</h2>
+
+  <details open>
+    <summary>⚠️ 盘后暴跌解读（本次分析核心）</summary>
+    <p><strong>盘后 -19%~-25%（至 $337/低点 $313）</strong>，主因：①Q2 营收 19.24 亿 miss 预期 1% ②Q3 指引中值 20.70 亿 miss 共识约 0.5% ③<b>CEO 承认"AI 模型升级节奏错拍"</b>（重大改进季度结束后才落地）——市场按"完美标准"惩罚，YTD 已 -38%。</p>
+    <p><strong>关键解读</strong>：基本面缺口（miss 1%/0.5%）与暴跌幅度（-19%）严重错配，<b>过度反应成分明显</b>；但"模型升级节奏"叙事是真实风险点（增长引擎=模型迭代），区别于纯错杀。盘后从 -28% 收窄至 -19% 显示有承接盘。</p>
+    <p><strong>核心矛盾</strong>：环比增速 Q1→Q2 仅 +4.2%（2025 Q3/Q4 为 +11.6%/+18%）——空头视为"加速期已过"的官方确认，多头视为"淡季+基数效应"的过度解读。研究主管裁决：<b>空头"数据+自白"证据质量更高，加速期结束占主导</b>。</p>
+  </details>
+
+  <details>
+    <summary>四维分析摘要（Phase 1 数据收集）</summary>
+    <p><strong>技术面 3.0/10</strong>：盘后 $337 击穿 52 周低点 359（创 52 周新低）、跌破布林下轨 361.87；ADX 55.99 强下行趋势；均线全空排列。但 -20% 级跳空 = 极端超卖（RSI<25），1-3 日技术性反弹概率高（目标 359-387）。支撑 313/300/280-290；阻力 359-362/377-380/395-400/417-432。缺口 417→337（-19%），50% 回撤 $377、62% 回撤 $387 为反弹强压区。</p>
+    <p><strong>基本面 8.5/10</strong>：Q2 营收 +53%、EPS 超预期、EBITDA +58% margin 84%、净利率 65%、FCF $8.63 亿≈净利润、现金 $30.5 亿、净杠杆 0.1x、ROE 212%、ROIC 81%——全球顶级盈利质量。估值：TTM PE ~32x、FY26E ~27x、PS ~20x（从"极度高估"修复至"合理偏高"，PEG 0.5-0.7）。<b>风险</b>：环比增速断崖（+4.2% vs +11.6%/+18%）、增长依赖 AXON 算法可持续性、2027 扭亏依赖 EPS 13.87（+80%）。</p>
+    <p><strong>新闻面 5.5/10</strong>：盘后暴跌主因"AI 模型升级时机错拍"叙事 + 双 miss + AI 焦虑；SEC 问询结案（无行动，利好）；苹果 DMA/DOJ 和解谈判（苹果税下行利好生态）；Ads Manager 开放；消费者广告支出创纪录（较 2025Q4 旺季 +28%）；Q3 指引口径矛盾（高于/低于共识两说）。</p>
+    <p><strong>情绪面 3.0/10</strong>：盘后 -25% = 恐慌性超调为主 + 真实叙事裂缝；机构评级面 89% 买入 vs 价格 -25% 严重背离（但评级是财报前快照、24-72h 可能批量下调）；技术深度超卖；内部人 5 月减持 $4346 万；SaaSpocalypse 环境。</p>
+  </details>
+
+  <details>
+    <summary>多空辩论结论（Phase 2）</summary>
+    <p><span class="bull">多头（加权 4.83）</span>：①双 miss 是噪声（Q3 指引中值 20.70 高于共识 20.08=增长加速，4）②节奏错拍=利好后移非取消（5）③技术破位=流动性踩踏、极端超卖（7，最强）④估值修复 PEG 0.5-0.7（4）⑤机构 89% 买入目标 $668（3，财报前旧照）⑥资产负债表底部支撑（6）。目标：短期 359-387 / 中期 400-450 / 12 个月 500-668。</p>
+    <p><span class="bear">空头（加权 6.71）</span>：①环比放缓 +4.2% + CEO 承认节奏错拍 = 加速期已过（9，全场最高质量证据）②27x 估值与 2027 EPS+80% 预期脆弱（8）③指引口径自相矛盾（6）④技术破位=机构系统性撤离、反弹是减仓窗口（7）⑤机构评级滞后、24-72h 批量下调将至（7）⑥内部人减持 $4346 万（4）⑦三重逆风 SaaSpocalypse/平台政策/AI 对手（6）。风险目标 $250-300。</p>
+    <p><strong>研究主管裁决</strong>：SELL（减持/规避），信心中高 ~70%。空头"数据+自白"双重确认的加速期结束，证据质量完胜；$337 未定价即将到来的评级下调周期；多空加权 空头 6.71 vs 多头 4.83。</p>
+  </details>
+
+  <details>
+    <summary>风险评估结论（Phase 4 三方辩论 + 裁决）</summary>
+    <p><strong>激进 8.0/10</strong>：SELL 过度保守——以机构目标 $500-668 计算盈亏比 2.1-6.4:1；RSI<25 + MACD 底背离 + SEC 结案 = A 级做多信号；环比 +4.2% 是淡旺季基准错误（Q2 淡季 vs Q4 旺季）；建议 $337 立即建首仓 8-10%。</p>
+    <p><strong>保守 8.5/10（近端最贴近现实）</strong>：280-313 试探区与自设目标价重合 = 买自己目标价（接飞刀）；评级下调潮 60-70%（72h -5~-12%）；跌破 300 概率 50-55%；复合尾部（评级潮+Q3 恶化+踩踏）10-15% 冲击 -35~-40%；1.5x ATR 止损在单日 $80 波动下必然滑点失效；建议纯 0 仓位。</p>
+    <p><strong>中性 6.5/10（执行框架最优）</strong>：SELL 方向成立但激进"超卖抄底"与保守"一跌清仓"均偏颇——高盈利现金流公司杀估值≠SaaSpocalypse，280-300 有回购理论底；建议深区左侧 8% + 右侧确认 8-12% 混合 + collar 对冲。</p>
+    <p><strong>风险主管最终裁决</strong>：SELL（减持/规避），风险等级高。近端保守派最贴近现实（下调潮在途废掉激进派盈亏比输入）、执行框架中性派最优。$337 不建仓；试探区下移至 265-292（贴近回购理论底）；采纳 collar 对冲；持仓者 48h 内机械降至 ≤10%。</p>
+  </details>
+
+  <details>
+    <summary>操作方案（最终裁决版）& 催化剂日历</summary>
+    <p><strong>持仓者</strong>：8/6 开盘四情景（A 开≥350 卖 1/3 / B 开 320-345 卖 1/2 / C 开 300-319 卖 2/3 / D 开<300 不恐慌等反弹）；48h 内机械降至 ≤10%；重仓者立即上 collar（卖 390-400 call + 买 300 put）；回补条件：放量收复 359-362 站稳 2 日 → 回补至 15%。</p>
+    <p><strong>无仓位者</strong>：8/6 一律不动，$337 不建仓；左侧深区承接第一档 8% @ 280-292、第二档 5% @ 265-280（贴近回购理论底）；右侧确认档 7% @ 359-362 放量收复站稳 2 日；总仓 ≤20%；时间止损 10 交易日无右侧确认 → 减半。</p>
+    <p><strong>目标价</strong>：承接仓第一目标 375-385 → 第二目标 420-450（跳空回补）→ 核心仓 6-12 个月 450-500（需增速企稳 ≥30%）。</p>
+    <p><strong>止损</strong>：承接仓 $250 硬止损；持仓者 $295 最后防线（承认滑点失效，以机械减仓为主）。</p>
+    <p><strong>催化剂</strong>：评级下调潮（24-72h，最临近）→ Q3 财报（约 11 月初，验证 AI 升级兑现）→ 苹果 DMA/DOJ 和解进展 → 回购（剩 $18 亿授权）。</p>
+  </details>
+
+  <table class="kpi-table" style="margin-top:12px;">
+    <tr><th>关键指标</th><th>数值</th><th>信号</th></tr>
+    <tr><td>最新盘后价（08-05）</td><td>$337（-19%，低点 $313）</td><td>▼ 破 52 周新低</td></tr>
+    <tr><td>Q2 营收 / EBITDA</td><td>$19.2 亿（+53%）/ $16.14 亿（+58% margin 84%）</td><td>▲▲ 顶级质量</td></tr>
+    <tr><td>EPS / 净利</td><td>$3.76（超预期）/ $12.67 亿（+55%）</td><td>▲ 超预期</td></tr>
+    <tr><td>环比增速（Q1→Q2）</td><td>+4.2%（vs 2025 Q3/Q4 +11.6%/+18%）</td><td>▼▼ 增速断崖</td></tr>
+    <tr><td>FCF / 现金 / 净杠杆</td><td>$8.63 亿 / $30.5 亿 / 0.1x</td><td>▲ 堡垒基本面</td></tr>
+    <tr><td>估值（TTM / FY26E）</td><td>~32x / ~27x</td><td>▼ 合理偏高</td></tr>
+    <tr><td>机构评级 / 目标均价</td><td>89% 买入 / $668（财报前快照）</td><td>⚠️ 或批量下调</td></tr>
+    <tr><td>ROE / 净利率</td><td>212% / 65%</td><td>▲▲ 全球顶级</td></tr>
+  </table>
+
+  <p style="font-size:13px; color:#6b7280; margin-top:12px;">数据来源：NeoData 金融数据服务（APP.US 行情/财报/评级/新闻/情绪）+ 公开财经源（盘后价：Benzinga / TradingView / 智通财经）。盘后报价非 NeoData 数据，已注明。</p>
+</div>
+
+<div class="disclaimer">
+  ⚠️ 本报告由 AI 多角色辩论系统基于公开信息自动生成，仅供研究参考，不构成任何投资建议或个股推荐。APP 单日 ATR 约 4.9%（$80 波动），仅适合可承受高波动者。8/6 开盘价与盘后价可能存在显著偏差。投资有风险，决策需谨慎。
+</div>
+
+<script>window.addEventListener("DOMContentLoaded",function(){if(typeof Chart==="undefined"){console.warn("Chart.js CDN offline, charts skipped");document.body.classList.add("chart-offline");return;}
+// ── 1. 综合评分雷达图 ──
+new Chart(document.getElementById('radarChart'), {
+  type: 'radar',
+  data: {
+    labels: ['技术面', '基本面', '新闻面', '情绪面', '风险暴露'],
+    datasets: [{
+      label: '综合评分 (0-10)',
+      data: [3.0, 8.5, 5.5, 3.0, 8.5],
+      backgroundColor: 'rgba(185,28,28,0.15)',
+      borderColor: '#b91c1c',
+      borderWidth: 2,
+      pointBackgroundColor: '#b91c1c',
+      pointRadius: 4
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    scales: { r: { min: 0, max: 10, ticks: { stepSize: 2 } } },
+    plugins: { legend: { position: 'bottom' } }
+  }
+});
+
+// ── 2. 价格走势图（60 日真实收盘价 + 盘后修正）──
+const dates = ['05-11','05-12','05-13','05-14','05-15','05-18','05-19','05-20','05-21','05-22','05-26','05-27','05-28','05-29','06-01','06-02','06-03','06-04','06-05','06-08','06-09','06-10','06-11','06-12','06-15','06-16','06-17','06-18','06-22','06-23','06-24','06-25','06-26','06-29','06-30','07-01','07-02','07-06','07-07','07-08','07-09','07-10','07-13','07-14','07-15','07-16','07-17','07-20','07-21','07-22','07-23','07-24','07-27','07-28','07-29','07-30','07-31','08-03','08-04','08-05','08-05盘后'];
+const closes = [478.42,490.69,453.53,485.16,501.00,492.38,476.90,482.28,485.89,481.68,514.24,567.83,599.89,613.09,613.70,605.63,570.83,558.87,557.20,563.69,520.84,492.98,478.57,496.77,520.86,515.20,479.49,469.71,469.39,467.02,464.96,445.93,477.08,498.76,515.23,564.61,527.06,543.79,527.98,522.18,520.43,506.98,442.85,448.98,452.73,434.48,424.54,424.60,428.69,412.48,398.86,391.98,412.73,418.22,399.46,403.87,395.90,406.16,419.70,417.80,337.02];
+function sma(arr, n) { return arr.map((_, i) => i < n-1 ? null : +(arr.slice(i-n+1, i+1).reduce((a,b)=>a+b,0)/n).toFixed(2)); }
+const sma20 = sma(closes, 20);
+const sma60 = sma(closes, 60);
+new Chart(document.getElementById('priceChart'), {
+  type: 'line',
+  data: {
+    labels: dates,
+    datasets: [
+      { label: '收盘价（含盘后）', data: closes, borderColor: '#1f2937', backgroundColor: 'rgba(31,41,55,0.06)', borderWidth: 2, pointRadius: 0, tension: 0.1, fill: true },
+      { label: 'SMA20', data: sma20, borderColor: '#f59e0b', borderWidth: 1.5, pointRadius: 0, tension: 0.2 },
+      { label: 'SMA60', data: sma60, borderColor: '#3b82f6', borderWidth: 1.5, pointRadius: 0, tension: 0.2 }
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    interaction: { mode: 'index', intersect: false },
+    plugins: { legend: { position: 'bottom' } },
+    scales: {
+      y: { min: 240, max: 660, title: { display: true, text: '价格 (USD)' } },
+      x: { ticks: { maxTicksLimit: 12 } }
+    }
+  },
+  plugins: [{
+    id: 'refLines',
+    afterDraw(chart) {
+      const ctx = chart.ctx;
+      const addLine = (y, color, dash, label, w) => {
+        const sc = chart.scales.y, xc = chart.scales.x;
+        const py = sc.getPixelForValue(y);
+        ctx.save();
+        ctx.strokeStyle = color; ctx.setLineDash(dash); ctx.lineWidth = w || 1.5;
+        ctx.beginPath(); ctx.moveTo(xc.left, py); ctx.lineTo(xc.right, py); ctx.stroke();
+        ctx.setLineDash([]);
+        ctx.fillStyle = color; ctx.font = '11px sans-serif';
+        ctx.fillText(label, xc.right - 110, py - 5);
+        ctx.restore();
+      };
+      addLine(337, '#9ca3af', [6,4], '现价 337', 2);
+      addLine(250, '#dc2626', [6,4], '硬止损 250', 1.5);
+      addLine(280, '#f59e0b', [4,4], '承接区 265-292', 1.5);
+      addLine(359, '#16a34a', [6,4], '右侧确认 359-362', 1);
+    }
+  }]
+});
+
+// ── 3. 多空论点对比图 ──
+new Chart(document.getElementById('debateChart'), {
+  type: 'bar',
+  data: {
+    labels: ['多头: 双miss噪声', '多头: 利好后移', '多头: 超卖踩踏', '多头: 估值修复', '多头: 机构共识', '多头: 资产负债表', '空头: 加速期已过', '空头: 估值锚失效', '空头: 指引矛盾', '空头: 机构撤离', '空头: 评级滞后', '空头: 内部人减持', '空头: 三重逆风'],
+    datasets: [{
+      label: '论点权重 (1-10)',
+      data: [4, 5, 7, 4, 3, 6, 9, 8, 6, 7, 7, 4, 6],
+      backgroundColor: ['#16a34a','#16a34a','#16a34a','#16a34a','#16a34a','#16a34a','#dc2626','#dc2626','#dc2626','#dc2626','#dc2626','#dc2626','#dc2626'],
+      borderRadius: 4
+    }]
+  },
+  options: {
+    indexAxis: 'y',
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false }, tooltip: { callbacks: { label: c => `权重 ${c.raw}` } } },
+    scales: { x: { min: 0, max: 10, ticks: { stepSize: 2 } } }
+  }
+});
+
+// ── 4. 风险评估三角图 ──
+new Chart(document.getElementById('riskChart'), {
+  type: 'radar',
+  data: {
+    labels: ['激进派', '保守派', '中性派'],
+    datasets: [{
+      label: '风险态度评分 (0-10)',
+      data: [8.0, 8.5, 6.5],
+      backgroundColor: 'rgba(59,130,246,0.15)',
+      borderColor: '#3b82f6',
+      borderWidth: 2,
+      pointBackgroundColor: '#3b82f6',
+      pointRadius: 5
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    scales: { r: { min: 0, max: 10, ticks: { stepSize: 2 } } },
+    plugins: { legend: { position: 'bottom' } }
+  }
+});
+});</script>
+<script>if(document.body.classList.contains("chart-offline")){var t=document.createElement("div");t.className="chart-offline-toast";t.textContent="离线模式：图表未加载（依赖 Chart.js CDN），文字内容正常显示";document.body.appendChild(t);}<\/script></body>
+</html>

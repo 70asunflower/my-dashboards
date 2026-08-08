@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SpaceX 投资分析报告 - 2026-08-05（含解禁因素）</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
+<style>
+  body { font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif; max-width: 1080px; margin: 0 auto; padding: 24px; background: #f7f8fa; color: #1f2937; }
+  h1 { font-size: 26px; margin-bottom: 4px; }
+  .subtitle { color: #6b7280; font-size: 14px; margin-bottom: 24px; }
+  .update-banner { background: #fef3c7; border: 1px solid #f59e0b; color: #92400e; padding: 12px 16px; border-radius: 10px; margin-bottom: 20px; font-size: 14px; line-height: 1.6; }
+  .decision-card { background: linear-gradient(135deg, #d97706, #b45309); color: white; padding: 32px; border-radius: 16px; margin-bottom: 24px; box-shadow: 0 4px 16px rgba(217,119,6,0.3); }
+  .decision-card h1 { font-size: 44px; margin: 4px 0 8px; letter-spacing: 2px; }
+  .badge-row { display: flex; gap: 12px; margin: 12px 0; flex-wrap: wrap; }
+  .badge { background: rgba(255,255,255,0.2); padding: 6px 14px; border-radius: 20px; font-size: 13px; font-weight: 600; }
+  .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-top: 16px; }
+  .grid-item { background: rgba(255,255,255,0.18); padding: 14px; border-radius: 10px; }
+  .grid-item .label { font-size: 12px; opacity: 0.85; }
+  .grid-item .value { font-size: 18px; font-weight: 700; margin-top: 4px; }
+  .chart-card { background: white; padding: 24px; border-radius: 12px; margin-bottom: 24px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+  .chart-card h2 { margin-top: 0; font-size: 18px; }
+  .chart-wrap { position: relative; height: 340px; }
+  .chart-wrap.tall { height: 420px; }
+  details { border: 1px solid #e5e7eb; border-radius: 8px; padding: 12px 16px; margin-bottom: 12px; background: #fafbfc; }
+  summary { font-weight: 600; cursor: pointer; color: #111827; }
+  details p, details li { font-size: 14px; line-height: 1.7; color: #374151; }
+  ul { padding-left: 20px; }
+  .bull { color: #16a34a; font-weight: 600; }
+  .bear { color: #dc2626; font-weight: 600; }
+  .kpi-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  .kpi-table th, .kpi-table td { padding: 8px 10px; border-bottom: 1px solid #f0f0f0; text-align: left; }
+  .kpi-table th { background: #f9fafb; }
+  .disclaimer { color: #6b7280; font-size: 13px; padding: 16px; border-top: 1px solid #e5e7eb; margin-top: 24px; text-align: center; }
+  @media (max-width: 720px) { .grid { grid-template-columns: repeat(2, 1fr); } body { padding: 16px; } }
+</style>
+<style>.chart-offline-toast{position:fixed;top:12px;right:12px;background:#fff8e1;color:#7a5b00;border:1px solid #d4a537;border-radius:8px;padding:8px 12px;font-size:13px;box-shadow:0 2px 8px rgba(0,0,0,.1);z-index:9999}</style></head>
+<body>
+
+<h1>🚀 SpaceX（SPCX.US）投资分析报告</h1>
+<div class="subtitle">分析日期：2026-08-05 ｜ 数据源：NeoData + 公开财经源（解禁/做空） ｜ 多角色辩论制（12 成员） ｜ 重点：解禁（Lockup）因素</div>
+
+<!-- 解禁风险公告 -->
+<div class="update-banner">
+  <strong>⚠️ 明日 08-06 首批解禁（核心变量）</strong>：SpaceX 将于 8/6 释放首批 <strong>9.115 亿股（约 $1100 亿，超当前全部流通盘 1.64 倍）</strong>，属财报后第 2 个交易日触发；后续 16 批次滚动解禁至 12 月（每月约 7%）。业绩加速条款（+10% 需股价≥$175.5）未触发。马斯克 64 亿股锁仓至 2027-06-12。空头持仓占流通盘 34%（全美最高）。
+</div>
+
+<!-- 1. 顶部决策卡片 -->
+<div class="decision-card">
+  <div>最终交易决策（用户无仓位）</div>
+  <h1>🟡 HOLD → 触发式做多</h1>
+  <div style="font-size:15px; opacity:0.9;">暂缓建仓：解禁前 0 仓位，右侧确认替代左侧接刀，三档触发计划</div>
+  <div class="badge-row">
+    <span class="badge">信心水平：中-高</span>
+    <span class="badge">风险等级：高</span>
+    <span class="badge">建议总仓上限：40%</span>
+    <span class="badge">解禁前仓位：0%</span>
+  </div>
+  <div class="grid">
+    <div class="grid-item"><div class="label">现价（08-04）</div><div class="value">$125.33</div></div>
+    <div class="grid-item"><div class="label">首选触发（右侧）</div><div class="value">站稳 117-120</div></div>
+    <div class="grid-item"><div class="label">目标价</div><div class="value">145-150 → 165-185</div></div>
+    <div class="grid-item"><div class="label">硬止损</div><div class="value">收盘 &lt;100</div></div>
+  </div>
+</div>
+
+<!-- 2. 综合评分雷达图 -->
+<div class="chart-card">
+  <h2>📊 综合评分雷达图（五维 0-10 分）</h2>
+  <div class="chart-wrap"><canvas id="radarChart"></canvas></div>
+  <p style="font-size:13px; color:#6b7280;">技术 4.0 / 基本面 7.0 / 新闻 3.5 / 情绪 4.0 / 风险暴露 8.5。基本面高成长但估值透支；技术/新闻/情绪三面承压（解禁供给 + 资本开支超预期 + 34% 做空）。</p>
+</div>
+
+<!-- 3. 价格走势图 -->
+<div class="chart-card">
+  <h2>📈 上市以来价格走势（IPO 06-12 至 08-04，含盘后修正）</h2>
+  <div class="chart-wrap tall"><canvas id="priceChart"></canvas></div>
+  <p style="font-size:13px; color:#6b7280;">红线：104.83 生命线（失守看 100）｜ 橙线：117-120 右侧确认带 ｜ 灰线：135 发行价</p>
+</div>
+
+<!-- 4. 多空论点对比图 -->
+<div class="chart-card">
+  <h2>⚖️ 多空论点对比（权重 1-10，研究主管裁决）</h2>
+  <div class="chart-wrap"><canvas id="debateChart"></canvas></div>
+  <p style="font-size:13px; color:#6b7280;">多头合计 30 vs 空头合计 34 —— 近端（1-3 个月）空头胜出；远端（6-12 个月）多头成长逻辑未被证伪 → 暂缓建仓但保留转多计划。</p>
+</div>
+
+<!-- 5. 风险评估三角图 -->
+<div class="chart-card">
+  <h2>📋 风险评估三角（三方风险分析师评分 0-10）</h2>
+  <div class="chart-wrap"><canvas id="riskChart"></canvas></div>
+  <p style="font-size:13px; color:#6b7280;">激进 8.0（立即建 1/4 底仓）｜ 保守 9.0（纯 0 仓位不挂单）｜ 中性 6.5（底仓+修正阶梯）。风险主管采纳：保守派下行判断 + 中性派执行框架 + 激进派尾部参与。</p>
+</div>
+
+<!-- 6. 详细分析文本区 -->
+<div class="chart-card">
+  <h2>📝 详细分析</h2>
+
+  <details open>
+    <summary>🔒 解禁因素专题（本次分析核心）</summary>
+    <p><strong>8/6 首批解禁 9.115 亿股（~$1100 亿）= 流通盘（5.56 亿股）的 1.64 倍</strong>，属财报后第 2 个交易日触发，为金融史级单日供给。</p>
+    <p><strong>滚动解禁日历</strong>：8/6 首批 20% → 8/20（7%）→ 9/9-10（7%）→ 9/24-25（7%）→ 10/9-10（7%）→ 10/24-25（7%）→ Q3 财报后（28%）→ 12/8（剩余员工股）→ 2027-02~08（机构 100%）→ 2027-06-12（马斯克 64 亿股）。16 批次"泄压阀"式滚动，非一次性悬崖，但供给压力持续至年底。</p>
+    <p><strong>关键判断</strong>：① 解禁抛售方（员工 RSU 税负/早期投资者/VC）成本趋近零，任何价位都是巨额利润，"104.83 只是更好的出货价"；② 业绩加速条款（需股价≥$175.5）未触发，+10% 部分继续锁定；③ 34% 空头持仓（全美最高）= 双向弹簧——解禁供给是吸收轧空的对手盘（近端偏空），但解禁消化后空头回补提供上行动能（远端偏多）；④ 马斯克锁仓至 2027-06 年内无忧。</p>
+    <p><strong>技术含义</strong>：8/6 解禁周是决定性压力测试。失守 104.83 → 看 100 整数关；守住且放量收复 117-120 → 供给被吸收，右侧机会打开。</p>
+  </details>
+
+  <details>
+    <summary>四维分析摘要（Phase 1 数据收集）</summary>
+    <p><strong>技术面 4.0/10</strong>：上市三阶段（6 月爆炒 +67% → 单边阴跌 -53.5% → 8 月初放量反弹 +19.6%）；现价 125.33 短多中空（站上 5/10 日线、低于 20/30 日线与 EMA26）；MACD 零轴下柱翻红、KDJ 金叉 J 值偏高；ATR 10.43（8.3% 极端波动）。支撑 115.2-117.3 / 107-108.4 / 104.83（生命线）/ 100；阻力 126.7-130.3 / 135（发行价）/ 144.9-145.3 / 150-153.5。</p>
+    <p><strong>基本面 7.0/10</strong>：Q2 营收 $78.14 亿（+92% 超预期）、星链 $42.91 亿（+66%，唯一盈利板块，运营利润 +79%）、AI $25.61 亿（+247%，亏损收窄超预期 47%）；营业亏损收窄 85%、EBITDA $35.38 亿（+191%，率 45.3%）；星链 1200 万用户翻倍、$1000 亿现金、$475 亿订单。净利仍亏 -$5.41 亿、2027 财年扭亏；PS 53-88x、EV/EBITDA&gt;120x、AI 资本开支 $158 亿/季（全年 $450-600 亿）、FCF -$141 亿。</p>
+    <p><strong>新闻面 3.5/10</strong>：解禁供给 + 资本开支超预期主导短期；财报全面超预期但盘后 -7~8%；星舰第 13 飞成功、Starmind 太空 AI 卫星明年首发、独家英伟达架构、Grok 4.6/4.7 发布在即；宏观逆风（9 月加息概率升、30 年美债破 5.2%）；政治单点（马斯克 85% 投票权、DOGE 19 起诉讼）。</p>
+    <p><strong>情绪面 4.0/10</strong>：空头持仓 = 流通盘 34%（全美最高，超特斯拉）一个月翻 5-6 倍；机构 74% 买入、均值目标 $228-233（+82~86%）；Zephirin 目标价 $310→$190（专因解禁）；散户 Crowd Wisdom 乐观但 Stocktwits 转空。</p>
+  </details>
+
+  <details>
+    <summary>多空辩论结论（Phase 2）</summary>
+    <p><span class="bull">多头（合计权重 30）</span>：①解禁已定价/利空出尽（4，被先例证伪）②34% 空头=轧空燃料（5，近端受制于供给）③PS 88x 靠 +92% 成长消化（7）④EBITDA 45.3% 盈利拐点（8，最强点）⑤星链 $6000 亿 TAM+英伟达独家架构（6）。12 个月目标 $200-230。</p>
+    <p><span class="bear">空头（合计权重 34）</span>：①解禁非已定价 + FB/Rivian 解禁期 10-20% 回落先例（8，最强点）②供给 1.64 倍流通盘 + 知情资金加空（7）③估值无锚——60x EV/EBITDA 仅市值一半（7）④AI 烧钱双杀——5-6 季烧完 + 2028 年见顶（5）⑤政治单点——85% 投票权/DOGE 诉讼（4）。12 个月风险目标 90-105。</p>
+    <p><strong>研究主管裁决</strong>：HOLD（暂缓建仓）。近端（1-3 个月）空头胜出（解禁供给确定性事件占主导），远端（6-12 个月）多头成长逻辑未被证伪（保留 104.83-110 转多计划）。对无仓位用户：禁止在 125.33 追高建仓，等待硬性价位触发。</p>
+  </details>
+
+  <details>
+    <summary>风险评估结论（Phase 4 三方辩论 + 裁决）</summary>
+    <p><strong>激进 8.0/10</strong>：HOLD 过于保守；R/R 0.7-1.5:1 是"均值思维计算幂律行情"；34% 空头轧空燃料已就位；建议立即建 1/4 底仓（止损 117，组合风险 ~2%）。</p>
+    <p><strong>保守 9.0/10（下行判断最贴合现实）</strong>：四档触发单全部暴露在解禁首周天量抛压；尾部叠加最坏 -40%~-60%；ATR 8.3% 下 50% 仓位属激进；建议纯 0 仓位、不挂任何触发单，等 12 月解禁出清。</p>
+    <p><strong>中性 6.5/10（执行框架最佳）</strong>：触发单是"单向赌跌"结构，五大缺陷（跳空买贵/无上行触发/无时间维度/首档过重/子弹过快）；建议 5-8% 底仓 + 三段收盘确认阶梯 + 右侧突破 +10% + 总仓 40%。</p>
+    <p><strong>风险主管最终裁决：HOLD（暂缓建仓，触发式做多计划），风险等级高</strong>。采纳保守派下行判断（解禁抛售方成本趋零、首日跌&gt;5% 概率 55-65%）+ 中性派执行框架（右侧确认替代左侧接刀、补时间维度、降首档、压总仓）+ 激进派尾部参与（解禁消化后保留轧空触发）。解禁前 0 仓位。</p>
+  </details>
+
+  <details>
+    <summary>操作方案 & 仓位矩阵（收敛裁决版）</summary>
+    <p><strong>总基调不变：当前价 125.33 不建仓，全部仓位由硬性触发条件驱动（A/B/C/D 四档矩阵），解禁期总仓 ≤40%。</strong></p>
+    <p><strong>场景 1（A 确认触发）</strong>：8/6-8/10 多日确认（≥2 日收盘守 117 + 放量收复/贴近 20 日线）→ ① A 档 15-20% @ 117-120 → ② B 档 +10-15% @ 104.83-108.4（累计 ≤35%）→ ③ D 档 ≤10% @ 130+ 站稳（累计 ≤40%）</p>
+    <p><strong>场景 2（A 失败，0 仓位起）</strong>：8/6 跳空低开破 115 或窗口内收盘破 117 → 触发 A 作废 → ① B 档 20-25% @ 104.83-108.4（放量反转 + 次日确认，严禁限价接刀）→ ② C 档 +10-15% @ 100-104（累计 30-40%）→ ③ D 档 ≤10% @ 130+</p>
+    <p><strong>目标</strong>：第一 145-150 → 第二 165-185。</p>
+    <p><strong>止损纪律</strong>：逐档止损 ≥1×ATR（8-10%）、独立止损、收盘价确认、A 档不在 117 下方跳空接刀、单笔 -8% 硬止损。</p>
+    <p><strong>时间纪律（折中版，融合保守派红线）</strong>：8/6-8/28 供给密集窗口（1.64 倍流通盘历史最大供给期）临时总仓 ≤25%；解禁确认后放宽至 ≤40%。12 月三窗（16 批解禁出清 + 9 月 FOMC + 资本开支指引稳定）出清后重新评估总仓上限；11 月中下旬主动压回 ≤25%；8 月中下旬横盘无触发 → 重估而非无限挂单。</p>
+  </details>
+
+  <table class="kpi-table" style="margin-top:12px;">
+    <tr><th>关键指标</th><th>数值</th><th>信号</th></tr>
+    <tr><td>最新收盘（08-04）</td><td>$125.33（+9.43%）</td><td>▲ 解禁前放量反弹</td></tr>
+    <tr><td>盘后（财报后）</td><td>~$116.8（-6.8%）</td><td>▼ 资本开支超预期</td></tr>
+    <tr><td>8/6 解禁规模</td><td>9.115 亿股（~$1100 亿，1.64x 流通盘）</td><td>▼▼ 最大压制</td></tr>
+    <tr><td>空头持仓</td><td>34% 流通盘（全美最高）</td><td>⚠️ 双向弹簧</td></tr>
+    <tr><td>Q2 营收 / AI</td><td>$78.14 亿（+92%）/ +247%</td><td>▲▲ 成长爆发</td></tr>
+    <tr><td>EBITDA / 净利</td><td>$35.38 亿（+191%）/ -$5.41 亿</td><td>▲ 盈利拐点临近</td></tr>
+    <tr><td>PS / EV-EBITDA</td><td>53-88x / &gt;120x</td><td>▼ 估值透支</td></tr>
+    <tr><td>机构评级 / 目标</td><td>74% 买入 / $228-233（+82~86%）</td><td>▲ 但解禁前旧倍数</td></tr>
+  </table>
+
+  <p style="font-size:13px; color:#6b7280; margin-top:12px;">数据来源：NeoData 金融数据服务（SPCX.US 行情/财报/评级/新闻）+ 公开财经源（解禁日历 424B4 招股文件、空头持仓 S3 Partners、散户情绪 TipRanks/Stocktwits）。SPCX 为次新股，NeoData 部分数据不全，已用公开源补充并注明。</p>
+</div>
+
+<div class="disclaimer">
+  ⚠️ 本报告由 AI 多角色辩论系统基于公开信息自动生成，仅供研究参考，不构成任何投资建议或个股推荐。SpaceX 单日 ATR 8.3%（组合波动可达 ±4%），仅适合可承受高波动与最长 12 个月回撤的投资者。投资有风险，决策需谨慎。
+</div>
+
+<script>window.addEventListener("DOMContentLoaded",function(){if(typeof Chart==="undefined"){console.warn("Chart.js CDN offline, charts skipped");document.body.classList.add("chart-offline");return;}
+// ── 1. 综合评分雷达图 ──
+new Chart(document.getElementById('radarChart'), {
+  type: 'radar',
+  data: {
+    labels: ['技术面', '基本面', '新闻面', '情绪面', '风险暴露'],
+    datasets: [{
+      label: '综合评分 (0-10)',
+      data: [4.0, 7.0, 3.5, 4.0, 8.5],
+      backgroundColor: 'rgba(217,119,6,0.15)',
+      borderColor: '#d97706',
+      borderWidth: 2,
+      pointBackgroundColor: '#d97706',
+      pointRadius: 4
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    scales: { r: { min: 0, max: 10, ticks: { stepSize: 2 } } },
+    plugins: { legend: { position: 'bottom' } }
+  }
+});
+
+// ── 2. 价格走势图（上市以来真实收盘价）──
+const dates = ['06-12','06-15','06-16','06-17','06-18','06-22','06-23','06-24','06-25','06-26','06-29','06-30','07-01','07-02','07-06','07-07','07-08','07-09','07-10','07-13','07-14','07-15','07-16','07-17','07-20','07-21','07-22','07-23','07-24','07-27','07-28','07-29','07-30','07-31','08-03','08-04'];
+const closes = [160.95,192.50,201.80,191.82,185.00,154.60,156.11,154.54,153.00,153.23,164.19,170.86,157.54,162.00,160.42,149.47,148.30,152.16,145.30,139.14,136.08,135.27,131.11,123.99,119.85,123.54,115.26,118.24,115.07,113.50,116.41,112.55,112.20,108.37,114.53,125.33];
+function sma(arr, n) { return arr.map((_, i) => i < n-1 ? null : +(arr.slice(i-n+1, i+1).reduce((a,b)=>a+b,0)/n).toFixed(2)); }
+const sma20 = sma(closes, 20);
+new Chart(document.getElementById('priceChart'), {
+  type: 'line',
+  data: {
+    labels: dates,
+    datasets: [
+      { label: '收盘价', data: closes, borderColor: '#1f2937', backgroundColor: 'rgba(31,41,55,0.06)', borderWidth: 2, pointRadius: 0, tension: 0.1, fill: true },
+      { label: 'SMA20', data: sma20, borderColor: '#f59e0b', borderWidth: 1.5, pointRadius: 0, tension: 0.2 }
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    interaction: { mode: 'index', intersect: false },
+    plugins: { legend: { position: 'bottom' } },
+    scales: {
+      y: { min: 90, max: 240, title: { display: true, text: '价格 (USD)' } },
+      x: { ticks: { maxTicksLimit: 12 } }
+    }
+  },
+  plugins: [{
+    id: 'refLines',
+    afterDraw(chart) {
+      const ctx = chart.ctx;
+      const addLine = (y, color, dash, label, w) => {
+        const sc = chart.scales.y, xc = chart.scales.x;
+        const py = sc.getPixelForValue(y);
+        ctx.save();
+        ctx.strokeStyle = color; ctx.setLineDash(dash); ctx.lineWidth = w || 1.5;
+        ctx.beginPath(); ctx.moveTo(xc.left, py); ctx.lineTo(xc.right, py); ctx.stroke();
+        ctx.setLineDash([]);
+        ctx.fillStyle = color; ctx.font = '11px sans-serif';
+        ctx.fillText(label, xc.right - 110, py - 5);
+        ctx.restore();
+      };
+      addLine(125.33, '#9ca3af', [6,4], '现价 125.33', 2);
+      addLine(104.83, '#dc2626', [6,4], '生命线 104.83', 1.5);
+      addLine(135, '#9ca3af', [4,4], '发行价 135', 1);
+      addLine(117, '#f59e0b', [6,4], '右侧确认带 117-120', 1);
+    }
+  }]
+});
+
+// ── 3. 多空论点对比图 ──
+new Chart(document.getElementById('debateChart'), {
+  type: 'bar',
+  data: {
+    labels: ['多头: 解禁已定价', '多头: 空头轧空燃料', '多头: PS靠成长消化', '多头: EBITDA拐点', '多头: 星链TAM+英伟达', '空头: 解禁非定价+先例', '空头: 供给1.64x流通盘', '空头: 估值无锚', '空头: AI烧钱双杀', '空头: 政治单点'],
+    datasets: [{
+      label: '论点权重 (1-10)',
+      data: [4, 5, 7, 8, 6, 8, 7, 7, 5, 4],
+      backgroundColor: ['#16a34a','#16a34a','#16a34a','#16a34a','#16a34a','#dc2626','#dc2626','#dc2626','#dc2626','#dc2626'],
+      borderRadius: 4
+    }]
+  },
+  options: {
+    indexAxis: 'y',
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false }, tooltip: { callbacks: { label: c => `权重 ${c.raw}` } } },
+    scales: { x: { min: 0, max: 10, ticks: { stepSize: 2 } } }
+  }
+});
+
+// ── 4. 风险评估三角图 ──
+new Chart(document.getElementById('riskChart'), {
+  type: 'radar',
+  data: {
+    labels: ['激进派', '保守派', '中性派'],
+    datasets: [{
+      label: '风险态度评分 (0-10)',
+      data: [8.0, 9.0, 6.5],
+      backgroundColor: 'rgba(59,130,246,0.15)',
+      borderColor: '#3b82f6',
+      borderWidth: 2,
+      pointBackgroundColor: '#3b82f6',
+      pointRadius: 5
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    scales: { r: { min: 0, max: 10, ticks: { stepSize: 2 } } },
+    plugins: { legend: { position: 'bottom' } }
+  }
+});
+});</script>
+<script>if(document.body.classList.contains("chart-offline")){var t=document.createElement("div");t.className="chart-offline-toast";t.textContent="离线模式：图表未加载（依赖 Chart.js CDN），文字内容正常显示";document.body.appendChild(t);}<\/script></body>
+</html>

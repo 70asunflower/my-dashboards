@@ -2570,21 +2570,43 @@ init();
 /* ===== 云端同步（GitHub 数据通道）注入 ===== */
 (function(){
 var WB_VER="20260808-1";
-function checkVer(){if(location.protocol!=="https:")return;fetch(location.pathname+"?v="+Date.now(),{cache:"no-store"}).then(function(r){return r.text()}).then(function(t){var m=t.match(/WB_VER\s*=\s*"([^"]+)"/);if(m&&m[1]&&m[1]!==WB_VER){if(sessionStorage.getItem("wb_ver_shown")===m[1])return;sessionStorage.setItem("wb_ver_shown",m[1]);var b=document.createElement("div");b.style.cssText="position:fixed;top:0;left:0;right:0;z-index:10001;background:var(--gold2,#f0b90b);color:#1a1a1a;text-align:center;padding:9px 12px;font-size:13px;cursor:pointer;font-family:inherit";b.textContent="🔄 检测到新版本（"+m[1]+"），点击刷新";b.onclick=function(){location.href=location.pathname+"?v="+Date.now()};document.body.appendChild(b)}}).catch(function(){})}
-var K_TOKEN="wb_research_gh_token",K_REPO="wb_research_gh_repo",K_PATH="wb_inv_gh_path",K_AUTO="wb_research_gh_auto",K_LAST="wb_research_gh_last";
+function checkVer(){if(location.protocol!=="https:")return;var lc=+sessionStorage.getItem("wb_ver_check_ts")||0;if(Date.now()-lc<600000)return;sessionStorage.setItem("wb_ver_check_ts",Date.now());fetch(location.pathname+"?v="+Date.now(),{cache:"no-store"}).then(function(r){return r.text()}).then(function(t){var m=t.match(/WB_VER\s*=\s*"([^"]+)"/);if(m&&m[1]&&m[1]!==WB_VER){if(sessionStorage.getItem("wb_ver_shown")===m[1])return;sessionStorage.setItem("wb_ver_shown",m[1]);var b=document.createElement("div");b.style.cssText="position:fixed;top:0;left:0;right:0;z-index:10001;background:var(--gold2,#f0b90b);color:#1a1a1a;text-align:center;padding:9px 12px;font-size:13px;cursor:pointer;font-family:inherit";b.textContent="🔄 检测到新版本（"+m[1]+"），点击刷新";b.onclick=function(){location.href=location.pathname+"?v="+Date.now()};document.body.appendChild(b)}}).catch(function(){})}
+var K_TOKEN="wb_research_gh_token",K_REPO="wb_research_gh_repo",K_PATH="wb_inv_gh_path",K_AUTO="wb_inv_gh_auto",K_LAST="wb_inv_gh_last",K_LOCAL="wb_inv_gh_local";
 function cfg(){return{token:localStorage.getItem(K_TOKEN)||"",repo:localStorage.getItem(K_REPO)||"",path:localStorage.getItem(K_PATH)||"data/finance.json",auto:localStorage.getItem(K_AUTO)!=="0"}}
 function hd(t){return{"Authorization":"Bearer "+t,"Accept":"application/vnd.github+json","X-GitHub-Api-Version":"2022-11-28"}}
 function toB64(s){var b=new TextEncoder().encode(s),x="";for(var i=0;i<b.length;i++)x+=String.fromCharCode(b[i]);return btoa(x)}
 function fromB64(b64){var bin=atob(b64),u=new Uint8Array(bin.length);for(var i=0;i<bin.length;i++)u[i]=bin.charCodeAt(i);return new TextDecoder().decode(u)}
-function build(){return{version:1,exportedAt:todayISO(),data:collectState(),vault:localStorage.getItem(STORE.vault)||""}}
+function build(){return{version:1,exportedAt:new Date().toISOString(),data:collectState(),vault:localStorage.getItem(STORE.vault)||""}}
 function apply(d){if(d&&d.data)setAll(d.data);if(d&&d.vault)localStorage.setItem(STORE.vault,d.vault)}
 function getSha(c){return fetch("https://api.github.com/repos/"+c.repo+"/contents/"+encodeURIComponent(c.path),{headers:hd(c.token)}).then(function(r){if(r.status===404)return null;if(!r.ok)throw new Error("HTTP "+r.status);return r.json().then(function(j){return j.sha})})}
 function push(c){var content=toB64(JSON.stringify(build(),null,1));return getSha(c).then(function(sha){var body={message:"投资工作台同步 "+todayISO()+" "+new Date().toTimeString().slice(0,8),content:content};if(sha)body.sha=sha;return fetch("https://api.github.com/repos/"+c.repo+"/contents/"+encodeURIComponent(c.path),{method:"PUT",headers:hd(c.token),body:JSON.stringify(body)})}).then(function(r){if(!r.ok)throw new Error("HTTP "+r.status);localStorage.setItem(K_LAST,new Date().toISOString());return true})}
 function pull(c){return fetch("https://api.github.com/repos/"+c.repo+"/contents/"+encodeURIComponent(c.path),{headers:hd(c.token)}).then(function(r){if(r.status===404)throw new Error("云端还没有数据，请先推送到云端");if(!r.ok)throw new Error("HTTP "+r.status);return r.json()}).then(function(j){var d=JSON.parse(fromB64(j.content));apply(d);return saveState()})}
-function autoPull(){var c=cfg();if(!c.token||!c.repo)return;fetch("https://api.github.com/repos/"+c.repo+"/contents/"+encodeURIComponent(c.path),{headers:hd(c.token)}).then(function(r){if(r.status===404)return null;if(!r.ok)return null;return r.json()}).then(function(j){if(!j||!j.content)return;try{var d=JSON.parse(fromB64(j.content));if(!d||typeof d!=="object")return;apply(d);saveState().then(function(){switchTab(curTab)})}catch(e){}}).catch(function(){})}
-var _t=null;
-function maybePush(){var c=cfg();if(c.auto&&c.token&&c.repo){if(_t)clearTimeout(_t);_t=setTimeout(function(){var c2=cfg();if(c2.token&&c2.repo)push(c2).catch(function(){})},5000)}}
-(function(){var o=saveState;saveState=function(){var r=o.apply(this,arguments);maybePush();return r}})();
+function autoPull(){
+  var c=cfg();if(!c.token||!c.repo)return;
+  fetch("https://api.github.com/repos/"+c.repo+"/contents/"+encodeURIComponent(c.path),{headers:hd(c.token)})
+    .then(function(r){if(r.status===404)return null;if(!r.ok)return null;return r.json()})
+    .then(function(j){
+      if(!j||!j.content)return;
+      try{
+        var d=JSON.parse(fromB64(j.content));
+        if(!d||typeof d!=="object")return;
+        // 本地有未推送的修改时跳过自动覆盖，避免数据丢失
+        var localTs=localStorage.getItem(K_LOCAL);
+        var cloudTs=d.exportedAt;
+        if(localTs&&cloudTs&&new Date(localTs).getTime()>new Date(cloudTs).getTime()){
+          var st=document.getElementById("invStatus");if(st)st.textContent="本地有未推送的修改，已跳过自动覆盖（改动会在 5 秒后自动推送）";
+          return;
+        }
+        _syncing=true;
+        apply(d);
+        if(cloudTs)localStorage.setItem(K_LOCAL,cloudTs);
+        saveState().then(function(){_syncing=false;switchTab(curTab)},function(){_syncing=false});
+      }catch(e){_syncing=false}
+    }).catch(function(){_syncing=false});
+}
+var _t=null,_syncing=false;
+function maybePush(){var c=cfg();if(c.auto&&c.token&&c.repo&&!_syncing){if(_t)clearTimeout(_t);_t=setTimeout(function(){var c2=cfg();if(c2.token&&c2.repo)push(c2).catch(function(){})},5000)}}
+(function(){var o=saveState;saveState=function(){var r=o.apply(this,arguments);if(!_syncing)localStorage.setItem(K_LOCAL,new Date().toISOString());maybePush();return r}})();
 function makeBtn(){var b=document.createElement("button");b.className="btn ghost";b.id="btnSyncInv";b.title="GitHub 云端同步";b.style.marginRight="6px";b.innerHTML='<svg viewBox="0 0 24 24"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/></svg>云同步';var s=document.getElementById("btnSettings");if(s)s.parentNode.insertBefore(b,s);b.addEventListener("click",openPanel)}
 function openPanel(){
   var c=cfg();

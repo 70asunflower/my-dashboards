@@ -2604,5 +2604,63 @@ function init(){
 }
 init();
 </script>
+<script>
+/* ===== 云端同步（GitHub 数据通道）注入 ===== */
+(function(){
+var K_TOKEN="wb_research_gh_token",K_REPO="wb_research_gh_repo",K_PATH="wb_research_gh_path",K_AUTO="wb_research_gh_auto",K_LAST="wb_research_gh_last";
+function cfg(){return{token:localStorage.getItem(K_TOKEN)||"",repo:localStorage.getItem(K_REPO)||"",path:localStorage.getItem(K_PATH)||"data/finance.json",auto:localStorage.getItem(K_AUTO)!=="0"}}
+function hd(t){return{"Authorization":"Bearer "+t,"Accept":"application/vnd.github+json","X-GitHub-Api-Version":"2022-11-28"}}
+function toB64(s){var b=new TextEncoder().encode(s),x="";for(var i=0;i<b.length;i++)x+=String.fromCharCode(b[i]);return btoa(x)}
+function fromB64(b64){var bin=atob(b64),u=new Uint8Array(bin.length);for(var i=0;i<bin.length;i++)u[i]=bin.charCodeAt(i);return new TextDecoder().decode(u)}
+function build(){return{version:1,exportedAt:todayISO(),data:collectState(),vault:localStorage.getItem(STORE.vault)||""}}
+function apply(d){if(d&&d.data)setAll(d.data);if(d&&d.vault)localStorage.setItem(STORE.vault,d.vault)}
+function getSha(c){return fetch("https://api.github.com/repos/"+c.repo+"/contents/"+encodeURIComponent(c.path),{headers:hd(c.token)}).then(function(r){if(r.status===404)return null;if(!r.ok)throw new Error("HTTP "+r.status);return r.json().then(function(j){return j.sha})})}
+function push(c){var content=toB64(JSON.stringify(build(),null,1));return getSha(c).then(function(sha){var body={message:"投资工作台同步 "+todayISO()+" "+new Date().toTimeString().slice(0,8),content:content};if(sha)body.sha=sha;return fetch("https://api.github.com/repos/"+c.repo+"/contents/"+encodeURIComponent(c.path),{method:"PUT",headers:hd(c.token),body:JSON.stringify(body)})}).then(function(r){if(!r.ok)throw new Error("HTTP "+r.status);localStorage.setItem(K_LAST,new Date().toISOString());return true})}
+function pull(c){return fetch("https://api.github.com/repos/"+c.repo+"/contents/"+encodeURIComponent(c.path),{headers:hd(c.token)}).then(function(r){if(r.status===404)throw new Error("云端还没有数据，请先推送到云端");if(!r.ok)throw new Error("HTTP "+r.status);return r.json()}).then(function(j){var d=JSON.parse(fromB64(j.content));apply(d);return saveState()})}
+function autoPull(){var c=cfg();if(!c.token||!c.repo)return;fetch("https://api.github.com/repos/"+c.repo+"/contents/"+encodeURIComponent(c.path),{headers:hd(c.token)}).then(function(r){if(r.status===404)return null;if(!r.ok)return null;return r.json()}).then(function(j){if(!j||!j.content)return;try{var d=JSON.parse(fromB64(j.content));if(!d||typeof d!=="object")return;apply(d);saveState().then(function(){switchTab(curTab)})}catch(e){}}).catch(function(){})}
+var _t=null;
+function maybePush(){var c=cfg();if(c.auto&&c.token&&c.repo){if(_t)clearTimeout(_t);_t=setTimeout(function(){var c2=cfg();if(c2.token&&c2.repo)push(c2).catch(function(){})},5000)}}
+(function(){var o=saveState;saveState=function(){var r=o.apply(this,arguments);maybePush();return r}})();
+function makeBtn(){var b=document.createElement("button");b.className="btn ghost";b.id="btnSyncInv";b.title="GitHub 云端同步";b.style.marginRight="6px";b.innerHTML='<svg viewBox="0 0 24 24"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/></svg>云同步';var s=document.getElementById("btnSettings");if(s)s.parentNode.insertBefore(b,s);b.addEventListener("click",openPanel)}
+function openPanel(){
+  var c=cfg();
+  var ov=document.createElement("div");ov.id="invSyncOv";ov.style.cssText="position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:9999;display:flex;align-items:center;justify-content:center;padding:16px";
+  var p=document.createElement("div");p.style.cssText="background:var(--card,#1d2129);border:1px solid var(--border,#2b3140);border-radius:14px;padding:20px;width:min(92vw,400px);max-height:86vh;overflow:auto;color:var(--text,#e9e7e0)";
+  p.innerHTML='<h4 style="margin:0 0 12px;font-size:16px;color:var(--gold,#d4a537)">GitHub 云同步</h4>'+
+    '<label style="display:block;font-size:12px;color:var(--muted,#9aa0ab);margin-bottom:4px">Token（与科研工作台共享，已配置可留空）</label>'+
+    '<input id="invTok" type="password" value="'+c.token+'" style="width:100%;box-sizing:border-box;background:var(--bg2,#171a21);border:1px solid var(--border,#2b3140);border-radius:8px;color:var(--text);padding:9px 10px;font-size:13px;margin-bottom:10px;outline:none" placeholder="github_pat_…">'+
+    '<label style="display:block;font-size:12px;color:var(--muted,#9aa0ab);margin-bottom:4px">数据仓库 owner/repo</label>'+
+    '<input id="invRepo" value="'+c.repo+'" style="width:100%;box-sizing:border-box;background:var(--bg2,#171a21);border:1px solid var(--border,#2b3140);border-radius:8px;color:var(--text);padding:9px 10px;font-size:13px;margin-bottom:10px;outline:none" placeholder="70asunflower/my-dashboards-data">'+
+    '<label style="display:block;font-size:12px;color:var(--muted,#9aa0ab);margin-bottom:4px">数据文件路径</label>'+
+    '<input id="invPath" value="'+c.path+'" style="width:100%;box-sizing:border-box;background:var(--bg2,#171a21);border:1px solid var(--border,#2b3140);border-radius:8px;color:var(--text);padding:9px 10px;font-size:13px;margin-bottom:12px;outline:none">'+
+    '<label style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--text,#e9e7e0);margin-bottom:12px;cursor:pointer"><input type="checkbox" id="invAuto" '+(c.auto?"checked":"")+' style="width:16px;height:16px">数据变更后自动推送（默认开）</label>'+
+    '<div style="display:flex;gap:8px;margin-bottom:10px">'+
+    '<button id="invPush" class="btn gold" style="flex:1">推送到云端</button>'+
+    '<button id="invPull" class="btn ghost" style="flex:1">从云端恢复</button>'+
+    '</div>'+
+    '<div id="invStatus" style="font-size:12px;color:var(--muted,#9aa0ab);min-height:16px">'+(localStorage.getItem(K_LAST)?"上次同步："+new Date(localStorage.getItem(K_LAST)).toLocaleString():"尚未同步")+'</div>';
+  var close=function(){document.body.removeChild(ov)};
+  ov.addEventListener("click",function(e){if(e.target===ov)close()});
+  p.querySelector("#invPush").addEventListener("click",function(){
+    var t=document.getElementById("invTok").value.trim(),r=document.getElementById("invRepo").value.trim(),pp=document.getElementById("invPath").value.trim()||"data/finance.json";
+    if(t)localStorage.setItem(K_TOKEN,t);if(r)localStorage.setItem(K_REPO,r);localStorage.setItem(K_PATH,pp);localStorage.setItem(K_AUTO,document.getElementById("invAuto").checked?"1":"0");
+    if(!(t||localStorage.getItem(K_TOKEN))||!(r||localStorage.getItem(K_REPO))){document.getElementById("invStatus").textContent="请填写 Token 和仓库";return}
+    var st=document.getElementById("invStatus");st.textContent="正在推送…";
+    push(cfg()).then(function(){st.textContent="推送成功 "+new Date().toLocaleString();toast("已推送到云端")}).catch(function(e){st.textContent="推送失败："+e.message;toast("推送失败")});
+  });
+  p.querySelector("#invPull").addEventListener("click",function(){
+    var t=document.getElementById("invTok").value.trim(),r=document.getElementById("invRepo").value.trim(),pp=document.getElementById("invPath").value.trim()||"data/finance.json";
+    if(t)localStorage.setItem(K_TOKEN,t);if(r)localStorage.setItem(K_REPO,r);localStorage.setItem(K_PATH,pp);localStorage.setItem(K_AUTO,document.getElementById("invAuto").checked?"1":"0");
+    if(!confirm("将用云端数据覆盖本地全部数据？"))return;
+    var st=document.getElementById("invStatus");st.textContent="正在恢复…";
+    pull(cfg()).then(function(){st.textContent="恢复成功";switchTab(curTab);toast("已从云端恢复")}).catch(function(e){st.textContent="恢复失败："+e.message;toast("恢复失败")});
+  });
+  p.querySelector("#invAuto").addEventListener("change",function(){localStorage.setItem(K_AUTO,this.checked?"1":"0")});
+  ov.appendChild(p);document.body.appendChild(ov);
+}
+makeBtn();
+window.addEventListener("load",function(){var c=cfg();if(c.token&&c.repo)autoPull()});
+})();
+</script>
 </body>
 </html>

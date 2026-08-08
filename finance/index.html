@@ -2615,10 +2615,10 @@ function openPanel(){
   p.innerHTML='<h4 style="margin:0 0 12px;font-size:16px;color:var(--gold,#d4a537)">GitHub 云同步</h4>'+
     '<label style="display:block;font-size:12px;color:var(--muted,#9aa0ab);margin-bottom:4px">Token（与科研工作台共享，已配置可留空）</label>'+
     '<input id="invTok" type="password" value="'+c.token+'" style="width:100%;box-sizing:border-box;background:var(--bg2,#171a21);border:1px solid var(--border,#2b3140);border-radius:8px;color:var(--text);padding:9px 10px;font-size:13px;margin-bottom:10px;outline:none" placeholder="github_pat_…">'+
-    '<label style="display:block;font-size:12px;color:var(--muted,#9aa0ab);margin-bottom:4px">数据仓库 owner/repo</label>'+
+    '<label style="display:block;font-size:12px;color:var(--muted,#9aa0ab);margin-bottom:4px">数据仓库 owner/repo（与科研工作台共用同一个仓库）</label>'+
     '<input id="invRepo" value="'+c.repo+'" style="width:100%;box-sizing:border-box;background:var(--bg2,#171a21);border:1px solid var(--border,#2b3140);border-radius:8px;color:var(--text);padding:9px 10px;font-size:13px;margin-bottom:10px;outline:none" placeholder="70asunflower/my-dashboards-data">'+
-    '<label style="display:block;font-size:12px;color:var(--muted,#9aa0ab);margin-bottom:4px">数据文件路径</label>'+
-    '<input id="invPath" value="'+c.path+'" style="width:100%;box-sizing:border-box;background:var(--bg2,#171a21);border:1px solid var(--border,#2b3140);border-radius:8px;color:var(--text);padding:9px 10px;font-size:13px;margin-bottom:12px;outline:none">'+
+    '<label style="display:block;font-size:12px;color:var(--muted,#9aa0ab);margin-bottom:4px">数据文件路径（科研用 data/research.json，投资用 data/finance.json，勿共用）</label>'+
+    '<input id="invPath" value="'+c.path+'" style="width:100%;box-sizing:border-box;background:var(--bg2,#171a21);border:1px solid var(--border,#2b3140);border-radius:8px;color:var(--text);padding:9px 10px;font-size:13px;margin-bottom:12px;outline:none" placeholder="data/finance.json">'+
     '<label style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--text,#e9e7e0);margin-bottom:12px;cursor:pointer"><input type="checkbox" id="invAuto" '+(c.auto?"checked":"")+' style="width:16px;height:16px">数据变更后自动推送（默认开）</label>'+
     '<div style="display:flex;gap:8px;margin-bottom:10px">'+
     '<button id="invPush" class="btn gold" style="flex:1">推送到云端</button>'+

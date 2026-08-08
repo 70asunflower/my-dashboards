@@ -2607,7 +2607,7 @@ init();
 <script>
 /* ===== 云端同步（GitHub 数据通道）注入 ===== */
 (function(){
-var K_TOKEN="wb_research_gh_token",K_REPO="wb_research_gh_repo",K_PATH="wb_research_gh_path",K_AUTO="wb_research_gh_auto",K_LAST="wb_research_gh_last";
+var K_TOKEN="wb_research_gh_token",K_REPO="wb_research_gh_repo",K_PATH="wb_inv_gh_path",K_AUTO="wb_research_gh_auto",K_LAST="wb_research_gh_last";
 function cfg(){return{token:localStorage.getItem(K_TOKEN)||"",repo:localStorage.getItem(K_REPO)||"",path:localStorage.getItem(K_PATH)||"data/finance.json",auto:localStorage.getItem(K_AUTO)!=="0"}}
 function hd(t){return{"Authorization":"Bearer "+t,"Accept":"application/vnd.github+json","X-GitHub-Api-Version":"2022-11-28"}}
 function toB64(s){var b=new TextEncoder().encode(s),x="";for(var i=0;i<b.length;i++)x+=String.fromCharCode(b[i]);return btoa(x)}

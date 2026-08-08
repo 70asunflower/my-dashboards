@@ -237,6 +237,12 @@ footer{text-align:center;font-size:12px;color:var(--text-3);padding:22px 0 8px}
 
   <div class="stats" id="statsBar"></div>
 
+  <div class="tip" id="cfgTip" style="display:none">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 10h-1.26A8 8 0 109 20h9a5 5 0 000-10z"/></svg>
+    <span>数据默认存云端（GitHub 私有仓库）：点右上角「云同步」配置一次，之后打开页面自动加载、改动自动保存。</span>
+    <button class="close" id="cfgTipClose" aria-label="关闭">×</button>
+  </div>
+
   <div class="tip" id="envTip" style="display:none">
     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v5m0 3h.01"/></svg>
     <span>当前环境无法在本地保存数据（浏览器存储被禁用，常见于预览面板 / 无痕模式 / 直接双击本地文件）。录入内容刷新后会丢失，请改用浏览器打开线上链接使用。</span>
@@ -643,10 +649,11 @@ function tmplCount(p){
 }
 function renderPapers(){
   var el=document.getElementById("paperList");
-  var list=papers.filter(function(p){return !p.archived});
-  var n=list.filter(function(p){return p.status==="待读"}).length;
-  document.getElementById("paperCnt").textContent=list.length+" 篇 · 待读 "+n;
-  if(!list.length){el.innerHTML='<div class="empty">没有在管的文献，点击「添加文献」收录</div>';return}
+  var all=papers.filter(function(p){return !p.archived});
+  var n=all.filter(function(p){return p.status==="待读"}).length;
+  document.getElementById("paperCnt").textContent=all.length+" 篇 · 待读 "+n;
+  if(!all.length){el.innerHTML='<div class="empty">没有在管的文献，点击「添加文献」收录</div>';return}
+  var list=all.slice(0,paperLimit),more=all.length-paperLimit;
   el.innerHTML=list.map(function(p){
     var tc=tmplCount(p);
     var noteHtml=tc>0?'<button class="p-note-toggle" data-ptg="'+p.id+'">文献笔记（'+tc+' 项）</button>'+
@@ -661,7 +668,9 @@ function renderPapers(){
     '<button class="icon-btn" data-pedit="'+p.id+'" title="编辑"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9M16.5 3.5a2.1 2.1 0 013 3L7 19l-4 1 1-4z"/></svg></button>'+
     '<button class="icon-btn red" data-pdel="'+p.id+'" title="删除"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M9 7V4h6v3m-9 0l1 13h10l1-13"/></svg></button>'+
     '</div></div></div>';
-  }).join("");
+  }).join("")+(more>0?'<button class="btn sm" id="paperMore" style="width:100%;border-style:dashed">加载更多文献（还有 '+more+' 篇）</button>':"");
+  var pm=el.querySelector("#paperMore");
+  if(pm)pm.addEventListener("click",function(){paperLimit+=50;render()});
   el.querySelectorAll("[data-st]").forEach(function(b){
     b.addEventListener("click",function(){
       var p=papers.find(function(x){return x.id===b.getAttribute("data-id")});
@@ -695,15 +704,16 @@ function renderPapers(){
 /* ---------- 灵感 ---------- */
 function renderIdeas(){
   var el=document.getElementById("ideaList");
-  var list=ideas.filter(function(x){return !x.archived&&(!activeTag||(x.tags||"").split(/[,，\s]+/).indexOf(activeTag)>-1)});
-  document.getElementById("ideaCnt").textContent=list.length+" 条";
+  var all=ideas.filter(function(x){return !x.archived&&(!activeTag||(x.tags||"").split(/[,，\s]+/).indexOf(activeTag)>-1)});
+  document.getElementById("ideaCnt").textContent=all.length+" 条";
   var html="";
   if(activeTag){html='<div class="filter-line">筛选标签：'+esc(activeTag)+'<button class="btn sm" id="tagClear" style="margin-left:auto;min-height:30px">清除筛选</button></div>'}
-  if(!list.length){
+  if(!all.length){
     el.innerHTML=html+(activeTag?'<div class="empty">该标签下暂无灵感</div>':'<div class="empty">暂无灵感，有想法就记下来</div>');
     var tc=el.querySelector("#tagClear");if(tc)tc.addEventListener("click",function(){activeTag="";render()});
     return;
   }
+  var list=all.slice(0,ideaLimit),more=all.length-ideaLimit;
   el.innerHTML=html+list.map(function(it){
     return '<div class="idea'+(it.converted?" converted":"")+'" data-id="'+it.id+'"><div class="i-content">'+esc(it.content)+
     '<div class="i-meta">'+(it.tags?it.tags.split(/[,，\s]+/).filter(Boolean).map(function(t){return "<span class='i-tag'"+(t===activeTag?" style='background:var(--primary);color:#fff'":"")+" data-tagf='"+esc(t)+"'>"+esc(t)+"</span>"}).join(""):"")+(it.converted?"<span class='i-tag' style='background:var(--success-bg);color:var(--success)'>已转待办</span>":"")+'</div></div>'+
@@ -714,7 +724,9 @@ function renderIdeas(){
     '<button class="icon-btn" data-iarch="'+it.id+'" title="归档"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8V21H3V8M1 3h22v5H1zM10 12h4"/></svg></button>'+
     '<button class="icon-btn red" data-idel="'+it.id+'" title="删除"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M9 7V4h6v3m-9 0l1 13h10l1-13"/></svg></button>'+
     '</div></div></div>';
-  }).join("");
+  }).join("")+(more>0?'<button class="btn sm" id="ideaMore" style="width:100%;border-style:dashed">加载更多灵感（还有 '+more+' 条）</button>':"");
+  var im=el.querySelector("#ideaMore");
+  if(im)im.addEventListener("click",function(){ideaLimit+=50;render()});
   el.querySelectorAll("[data-idel]").forEach(function(b){
     b.addEventListener("click",function(){
       var it=ideas.find(function(x){return x.id===b.getAttribute("data-idel")});
@@ -923,7 +935,7 @@ function fromB64(b64){
   return new TextDecoder().decode(bytes);
 }
 function getSyncCfg(){
-  return{token:safeGet(LS_GH_TOKEN)||"",repo:safeGet(LS_GH_REPO)||"",path:safeGet(LS_GH_PATH)||"wb_research_backup.json",auto:safeGet(LS_GH_AUTO)==="1",last:safeGet(LS_GH_LAST)||""};
+  return{token:safeGet(LS_GH_TOKEN)||"",repo:safeGet(LS_GH_REPO)||"",path:safeGet(LS_GH_PATH)||"data/research.json",auto:safeGet(LS_GH_AUTO)!=="0",last:safeGet(LS_GH_LAST)||""};
 }
 function buildBackup(){return{version:1,exportedAt:todayStr(),projects:projects,papers:papers,ideas:ideas,habits:habits,records:records,logs:logs,todos:todos}}
 function applyBackup(d){
@@ -970,7 +982,22 @@ function syncPull(cfg){
       return "已恢复云端数据（课题 "+projects.length+" · 文献 "+papers.length+" · 灵感 "+ideas.length+"）";
     });
 }
-var _autoTimer=null,_skipAuto=false,LOG_LIMIT=60,_todayFull=false,activeTag="";
+function autoPull(){
+  var cfg=getSyncCfg();
+  if(!cfg.token||!cfg.repo)return;
+  fetch("https://api.github.com/repos/"+cfg.repo+"/contents/"+encodeURIComponent(cfg.path),{headers:ghHeaders(cfg.token)})
+    .then(function(r){if(r.status===404)return null;if(!r.ok)return null;return r.json()})
+    .then(function(j){
+      if(!j||!j.content)return;
+      try{
+        var d=JSON.parse(fromB64(j.content));
+        if(!d||typeof d!=="object")return;
+        applyBackup(d);
+        render();
+      }catch(e){}
+    }).catch(function(){});
+}
+var _autoTimer=null,_skipAuto=false,LOG_LIMIT=60,_todayFull=false,activeTag="",paperLimit=50,ideaLimit=50,_archOpen={proj:false,paper:false,idea:false},_archLimit={proj:20,paper:20,idea:20};
 function withRetry(fn,times){
   return new Promise(function(resolve,reject){
     function attempt(n){
@@ -994,25 +1021,25 @@ function scheduleAutoPush(){
     var cfg=getSyncCfg();
     if(!cfg.token||!cfg.repo)return;
     syncPush(cfg).catch(function(){});
-  },2000);
+  },5000);
 }
 function setSyncStatus(msg){var el=document.getElementById("ghStatus");if(el)el.textContent=msg}
 function openSyncModal(){
   var cfg=getSyncCfg();
-  openModal('<h4>GitHub 云同步</h4>'+
-    '<div class="f-row"><label>Token（GitHub Personal Access Token）</label><input type="password" id="ghToken" placeholder="ghp_… 或 github_pat_…" value="'+esc(cfg.token)+'"></div>'+
-    '<div class="f-row"><label>仓库（owner/repo）</label><input type="text" id="ghRepo" placeholder="如：70asunflower/research-workspace" value="'+esc(cfg.repo)+'"></div>'+
-    '<div class="f-row"><label>备份文件路径（默认即可）</label><input type="text" id="ghPath" value="'+esc(cfg.path)+'"></div>'+
-    '<div class="f-row"><label style="flex-direction:row;align-items:center;gap:8px"><input type="checkbox" id="ghAuto" style="width:18px;height:18px;min-height:0"'+(cfg.auto?" checked":"")+'> 数据变更后自动推送到云端</label></div>'+
-    '<p class="hint" style="margin-bottom:12px">安全提示：Token 只保存在本浏览器（localStorage），不上传服务器。建议使用 fine-grained token 并仅授权此一个仓库。推送到私有仓库更安全。</p>'+
-    '<div class="f-btns"><button class="btn primary" id="ghPush">推送到云端</button><button class="btn" id="ghPull">从云端恢复</button><button class="btn" id="mCancel">关闭</button></div>'+
+  openModal('<h4>云端数据（GitHub）</h4>'+
+    '<div class="f-row"><label>Token（GitHub Personal Access Token）</label><input type="password" id="ghToken" placeholder="github_pat_…" value="'+esc(cfg.token)+'"></div>'+
+    '<div class="f-row"><label>数据仓库（owner/repo）</label><input type="text" id="ghRepo" placeholder="如：70asunflower/my-dashboards-data" value="'+esc(cfg.repo)+'"></div>'+
+    '<div class="f-row"><label>数据文件路径（默认即可）</label><input type="text" id="ghPath" value="'+esc(cfg.path)+'"></div>'+
+    '<div class="f-row"><label style="flex-direction:row;align-items:center;gap:8px"><input type="checkbox" id="ghAuto" style="width:18px;height:18px;min-height:0"'+(cfg.auto?" checked":"")+'> 数据变更后自动推送（默认开启）</label></div>'+
+    '<p class="hint" style="margin-bottom:12px">配置后：打开页面自动加载云端数据，改动自动保存（5 秒防抖）。Token 只存本浏览器；建议 fine-grained token 仅授权数据仓库（如 my-dashboards-data）。离线时工作台照常本地使用。</p>'+
+    '<div class="f-btns"><button class="btn primary" id="ghPush">立即推送到云端</button><button class="btn" id="ghPull">从云端恢复</button><button class="btn" id="mCancel">关闭</button></div>'+
     '<p class="hint" id="ghStatus" style="margin-top:10px">'+(cfg.last?"上次同步："+new Date(cfg.last).toLocaleString():"尚未同步过")+'</p>',
     null);
   var mask=document.getElementById("mask");
   function readCfg(){
     var t=document.getElementById("ghToken").value.trim(),
         r=document.getElementById("ghRepo").value.trim(),
-        p=(document.getElementById("ghPath").value.trim()||"wb_research_backup.json");
+        p=(document.getElementById("ghPath").value.trim()||"data/research.json");
     safeSet(LS_GH_TOKEN,t);safeSet(LS_GH_REPO,r);safeSet(LS_GH_PATH,p);
     safeSet(LS_GH_AUTO,document.getElementById("ghAuto").checked?"1":"0");
     return{t:t,r:r,p:p};
@@ -1126,12 +1153,14 @@ function renderArch(){
     var items=c.arr.filter(function(x){return x.archived});
     if(cnt)cnt.textContent=items.length+" 项";
     if(!list)return;
-    if(!items.length){list.innerHTML="";return}
-    list.innerHTML=items.map(function(it){
+    if(!_archOpen[c.t]||!items.length){list.style.display="none";list.innerHTML="";return}
+    list.style.display="flex";
+    var slice=items.slice(0,_archLimit[c.t]),more=items.length-_archLimit[c.t];
+    list.innerHTML=slice.map(function(it){
       return '<div class="arch-item"><span class="a-name">'+esc(c.name(it))+'</span>'+
       '<button class="btn" data-are="'+c.t+'" data-id="'+it.id+'">恢复</button>'+
       '<button class="btn danger" data-adel="'+c.t+'" data-id="'+it.id+'">删除</button></div>';
-    }).join("");
+    }).join("")+(more>0?'<button class="btn sm" data-archmore="'+c.t+'" style="width:100%;border-style:dashed">加载更多（还有 '+more+' 条）</button>':"");
   });
   document.querySelectorAll("[data-are]").forEach(function(b){
     b.addEventListener("click",function(){
@@ -1151,9 +1180,14 @@ function renderArch(){
   });
   document.querySelectorAll("[data-at]").forEach(function(b){
     b.addEventListener("click",function(){
-      var l=document.querySelector("[data-al='"+b.getAttribute("data-at")+"']");
-      if(l)l.style.display=l.style.display==="flex"?"none":"flex";
+      var t=b.getAttribute("data-at");
+      _archOpen[t]=!_archOpen[t];
+      _archLimit[t]=20;
+      render();
     });
+  });
+  document.querySelectorAll("[data-archmore]").forEach(function(b){
+    b.addEventListener("click",function(){var t=b.getAttribute("data-archmore");_archLimit[t]+=20;render()});
   });
 }
 function renderEnvTip(){
@@ -1174,6 +1208,15 @@ function init(){
   syncThemeIcon();
   document.getElementById("btnTheme").addEventListener("click",toggleTheme);
   document.getElementById("btnSync").addEventListener("click",openSyncModal);
+  // 云端配置引导 + 启动自动拉取
+  var cfg0=getSyncCfg();
+  var ctip=document.getElementById("cfgTip");
+  if(!cfg0.token||!cfg0.repo){
+    if(ctip&&!safeGet("wb_research_cfg_tip")){ctip.style.display="flex"}
+    if(ctip){ctip.querySelector("#cfgTipClose").addEventListener("click",function(){safeSet("wb_research_cfg_tip","1");ctip.style.display="none"})}
+  }else{
+    autoPull();
+  }
   if(window.matchMedia){
     var mq=matchMedia("(prefers-color-scheme: dark)");
     mq.addEventListener("change",function(){

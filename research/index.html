@@ -1178,12 +1178,30 @@ function renderTip(){
     tip.style.display="flex";
   }else{tip.style.display="none"}
 }
+/* ---------- 缓存版本检测：检测到新版本提示刷新 ---------- */
+var WB_VER="20260808-1";
+function checkVersion(){
+  if(location.protocol!=="https:")return;
+  fetch(location.pathname+"?v="+Date.now(),{cache:"no-store"}).then(function(r){return r.text()}).then(function(txt){
+    var m=txt.match(/WB_VER\s*=\s*"([^"]+)"/);
+    if(m&&m[1]&&m[1]!==WB_VER){
+      if(sessionStorage.getItem("wb_ver_shown")===m[1])return;
+      sessionStorage.setItem("wb_ver_shown",m[1]);
+      var bar=document.createElement("div");bar.id="verTip";
+      bar.style.cssText="position:fixed;top:0;left:0;right:0;z-index:10000;background:var(--primary,#2059C8);color:#fff;text-align:center;padding:9px 12px;font-size:13px;cursor:pointer;font-family:inherit";
+      bar.textContent="🔄 检测到新版本（"+m[1]+"），点击刷新";
+      bar.onclick=function(){location.href=location.pathname+"?v="+Date.now()};
+      document.body.appendChild(bar);
+    }
+  }).catch(function(){});
+}
 function init(){
   var savedTheme=safeGet(LS_THEME);
   applyTheme(savedTheme||"");
   syncThemeIcon();
   document.getElementById("btnTheme").addEventListener("click",toggleTheme);
   document.getElementById("btnSync").addEventListener("click",openSyncModal);
+  checkVersion();
   // 云端配置引导 + 启动自动拉取
   var cfg0=getSyncCfg();
   var ctip=document.getElementById("cfgTip");

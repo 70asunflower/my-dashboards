@@ -2569,6 +2569,8 @@ init();
 <script>
 /* ===== 云端同步（GitHub 数据通道）注入 ===== */
 (function(){
+var WB_VER="20260808-1";
+function checkVer(){if(location.protocol!=="https:")return;fetch(location.pathname+"?v="+Date.now(),{cache:"no-store"}).then(function(r){return r.text()}).then(function(t){var m=t.match(/WB_VER\s*=\s*"([^"]+)"/);if(m&&m[1]&&m[1]!==WB_VER){if(sessionStorage.getItem("wb_ver_shown")===m[1])return;sessionStorage.setItem("wb_ver_shown",m[1]);var b=document.createElement("div");b.style.cssText="position:fixed;top:0;left:0;right:0;z-index:10001;background:var(--gold2,#f0b90b);color:#1a1a1a;text-align:center;padding:9px 12px;font-size:13px;cursor:pointer;font-family:inherit";b.textContent="🔄 检测到新版本（"+m[1]+"），点击刷新";b.onclick=function(){location.href=location.pathname+"?v="+Date.now()};document.body.appendChild(b)}}).catch(function(){})}
 var K_TOKEN="wb_research_gh_token",K_REPO="wb_research_gh_repo",K_PATH="wb_inv_gh_path",K_AUTO="wb_research_gh_auto",K_LAST="wb_research_gh_last";
 function cfg(){return{token:localStorage.getItem(K_TOKEN)||"",repo:localStorage.getItem(K_REPO)||"",path:localStorage.getItem(K_PATH)||"data/finance.json",auto:localStorage.getItem(K_AUTO)!=="0"}}
 function hd(t){return{"Authorization":"Bearer "+t,"Accept":"application/vnd.github+json","X-GitHub-Api-Version":"2022-11-28"}}
@@ -2621,6 +2623,7 @@ function openPanel(){
   ov.appendChild(p);document.body.appendChild(ov);
 }
 makeBtn();
+checkVer();
 window.addEventListener("load",function(){var c=cfg();if(c.token&&c.repo)autoPull()});
 })();
 </script>
